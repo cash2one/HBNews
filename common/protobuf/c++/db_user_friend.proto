@@ -1,0 +1,14 @@
+
+//道具信息序列化到db使用！
+message db_user_friend{
+    /** 朋友的用户ID */
+    optional uint32 user_id = 1 [default = 0];
+    /** 成为朋友时的时间戳 */
+    optional uint32 timestamp = 2 [default = 0];
+    /** 亲密度 */
+    optional uint32 friendship_value = 3 [default = 0];
+}
+
+message db_user_friend_arr {
+    repeated db_user_friend elements = 1;
+}

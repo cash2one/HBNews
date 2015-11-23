@@ -1,0 +1,39 @@
+
+//客户端发给as的 有response和notify
+enum e_as_gs_msg{
+	e_as_gs_msg_min = 0 ;		//必须为0  从0开始 方便为了funcmap数组存储
+	e_as_gs_msg_enter_area_req = 1;	//as告诉gs 玩家需要进入这个服务器
+	e_as_gs_msg_max = 2;		//
+};
+
+//as发给客户端的 有response和notify
+enum e_gs_as_msg{
+	e_gs_as_msg_min = 0 ;		//必须为0  从0开始 方便为了funcmap数组存储
+	e_gs_as_msg_enter_area_res = 1;	//
+	e_gs_as_msg_max = 2;
+};
+
+enum e_asgs_errorcode{
+	e_asgs_errorcode_min	= 0 ;		//因为初始化就为0 所以这里作为初始化
+	e_asgs_errorcode_success = 1 ;		//成功
+	e_asgs_errorcode_unkown_error = 2 ;	//未知错误
+	e_asgs_errorcode_token = 3;		//找不到token ： 是否正常登录进来的？
+	e_asgs_errorcode_has_same_token = 4;	//as想给gstoken 但是gs上已经有同样的token存在，
+	e_asgs_errorcode_max = 5;
+};
+
+//<<< common -------------
+
+//accountserver 通知 gs 某玩家来选区了
+message as_gs_enter_area_req{
+	required bytes client_id = 1;//发给gs 然后gs再发过来 这样as就知道是哪个玩家
+	required bytes token = 2;
+	required int32 user_id = 3;  //告诉是哪个玩家ID 然后gs可以以此为connect的key 并且去db server拉取相应的信息
+};
+
+//
+message gs_as_enter_area_res{
+	required int32 error_code = 1;	//错误码
+	required bytes client_id = 2;	//为了回调的时候 as知道是哪个玩家 
+	optional bytes token = 3;	//为了回调的时候 as知道发什么token给该玩家  可选 因为可能失败就不需要as再发给玩家
+};

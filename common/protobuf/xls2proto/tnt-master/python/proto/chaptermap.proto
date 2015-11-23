@@ -1,0 +1,20 @@
+/**
+* @file:   ./proto/chaptermap.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message CHAPTERMAP{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 所属大章 */
+    required int32 capterType = 2 [default = 0];
+    /** 类型 */
+    required int32 pointType = 3 [default = 0];
+    /** 开放等级 */
+    required int32 openLevel = 4 [default = 0];
+}
+
+message CHAPTERMAP_ARRAY {
+    repeated CHAPTERMAP items = 1;
+}

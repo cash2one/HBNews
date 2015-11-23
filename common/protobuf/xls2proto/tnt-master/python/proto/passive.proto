@@ -1,0 +1,26 @@
+/**
+* @file:   ./proto/passive.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message PASSIVE{
+    /** 技能ID */
+    required string id = 1 [default = ""];
+    /** 触发条件 */
+    required int32 triggerEnum = 2 [default = 0];
+    /** 触发Id */
+    required string triggerId = 3 [default = ""];
+    /** buff的id */
+    required string buffId = 4 [default = ""];
+    /** 作用的目标阵营 */
+    required int32 target_Team = 5 [default = 0];
+    /** 作用的目标势力 */
+    required int32 target_State = 6 [default = 0];
+    /** 作用的目标职业 */
+    required int32 target_Occupation = 7 [default = 0];
+}
+
+message PASSIVE_ARRAY {
+    repeated PASSIVE items = 1;
+}

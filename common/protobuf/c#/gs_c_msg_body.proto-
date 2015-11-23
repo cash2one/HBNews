@@ -1,0 +1,21 @@
+message GS_C_register_or_login_REQ{
+	required string username = 1;	//账户
+	required string password = 2;	//密码
+	required int32 partner = 3;	//客户端来源渠道ID
+	required int32 type = 4;	//账户类型 比如从各个平台来的客户  官方注册 官方游客
+	//optional string email = 3;
+};
+
+message GS_C_register_or_login_RES{
+	required int32 error_code = 1;
+	required int32 user_id = 2;
+	required string token = 3;	//连接用的令牌，客户端需要拿个这个和gs连接！
+};
+
+message GS_C_Register_Or_Login2{
+	required string account = 1;	//账户
+	required string password = 2;	//密码
+	required int32 partner = 3;	//客户端来源渠道ID
+	required int32 type = 4;	//账户类型 比如从各个平台来的客户  官方注册 官方游客
+	//optional string email = 3;
+}

@@ -1,0 +1,76 @@
+/**
+* @file:   ./proto/bossprop.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BOSSPROP{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 对应英雄 */
+    required string pointId = 2 [default = ""];
+    /** 国家 */
+    required int32 area = 3 [default = 0];
+    /** 职业 */
+    required int32 occupation = 4 [default = 0];
+    /** 等级 */
+    required int32 level = 5 [default = 0];
+    /** 生命 */
+    required int32 health = 6 [default = 0];
+    /** 攻击 */
+    required int32 damage = 7 [default = 0];
+    /** 护甲 */
+    required int32 pdd = 8 [default = 0];
+    /** 魔抗 */
+    required int32 mdd = 9 [default = 0];
+    /** 命中等级 */
+    required int32 hitLevel = 10 [default = 0];
+    /** 闪避等级 */
+    required int32 dodgeLevel = 11 [default = 0];
+    /** 暴击等级 */
+    required int32 criLevel = 12 [default = 0];
+    /** 韧性等级 */
+    required int32 tenacityLevel = 13 [default = 0];
+    /** 穿透 */
+    required int32 pddPierce = 14 [default = 0];
+    /** 被动技能 */
+    required string passiveSkillId = 15 [default = ""];
+    /** 被动技能等级 */
+    required string passiveSkillLevel = 16 [default = ""];
+    /** 普通攻击伤害范围 X */
+    required float range_X = 17 [default = 0];
+    /** 普通攻击伤害范围 Y */
+    required float range_Y = 18 [default = 0];
+    /** 普通攻击伤害范围 Z */
+    required float range_Z = 19 [default = 0];
+    /** 攻击速度（m/s） */
+    required float attackSpeed = 20 [default = 0];
+    /** 水平攻击距离（m） */
+    required float h_Dis = 21 [default = 0];
+    /** 垂直攻击距离（m） */
+    required float v_Dis = 22 [default = 0];
+    /** 移动速度(m/s) */
+    required float moveSpeed = 23 [default = 0];
+    /** 星级 */
+    required int32 star = 24 [default = 0];
+    /** 必杀阶段数 */
+    required int32 stage_B = 25 [default = 0];
+    /** 必杀每阶段对应hit数 */
+    required string hitNum_B = 26 [default = ""];
+    /** BOSS的必杀释放时间顺序 */
+    required string skillTimeList = 27 [default = ""];
+    /** BOSS的必杀预警时间 */
+    required string warningTimeList = 28 [default = ""];
+    /** 初始强度 */
+    required int32 maxIntensity = 29 [default = 0];
+    /** 每秒强度恢复（num/s） */
+    required int32 recoverIntensityRate = 30 [default = 0];
+    /** 硬直临界值（必杀可浮空和击退） */
+    required int32 minIntensity = 31 [default = 0];
+    /** 攻击类型 */
+    required int32 type_Normal = 32 [default = 0];
+}
+
+message BOSSPROP_ARRAY {
+    repeated BOSSPROP items = 1;
+}

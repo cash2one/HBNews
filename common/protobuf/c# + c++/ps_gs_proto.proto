@@ -1,0 +1,47 @@
+
+enum e_psgs_proto_version{
+	PSGS_VERSION = 1;
+};
+
+//ps发给gs的 有response和notify
+enum e_msg_ps_gs{
+	e_msg_ps_gs_min = 0 ;		//必须为0  从0开始 方便为了funcmap数组存储
+	e_msg_ps_gs_paied_req = 1;	//把支付成的请求 通知gs 让gs邮件给东西
+	e_msg_ps_gs_max = 5;		
+};
+
+//gs发给ps的 有response和notify
+enum e_msg_gs_ps{
+	e_msg_gs_ps_min = 0 ;		//必须为0  从0开始 方便为了funcmap数组存储
+	e_msg_gs_ps_paied_res = 1;	//
+	e_msg_gs_ps_max = 5;
+};
+
+enum e_psgs_errorcode{
+	e_psgs_errorcode_min	= 0 ;			//因为初始化就为0 所以这里作为初始化
+	e_psgs_errorcode_success = 1 ;			//操作成功
+	e_psgs_errorcode_unkown_error = 2 ;		//未知错误
+	e_psgs_errorcode_max = 4;
+};
+
+//<<< common -------------
+
+//ps告诉gs给用户什么东西， 然后gs以邮件的形式发给用户
+message ps_gs_paied_req{
+
+	message game_element{
+		required uint32 type = 1;
+		required uint32 id = 2;
+		required uint32 num = 3; //这里的数字是增量
+	};
+
+	required uint32 user_id = 1;
+	required string order_id = 2;
+	repeated game_element eles = 3;
+};
+
+//
+message gs_ps_paied_res{
+	required int32 error_code = 1;
+	optional string order_id = 2;
+};

@@ -1,0 +1,150 @@
+
+//pb的enum不能自动计算 不赋值！
+//enum e_msg_id {
+//	msg_id_min = 0;
+//	msg_id_login_req = 1;
+//	msg_id_login_res = 2;
+//	msg_chapter_map_info = 2;
+//	msg_max;
+//  };
+
+//客户端发给gs的 有response和notify
+enum e_c_gs_msg{
+	e_c_gs_msg_min = 0 ;//必须为0  从0开始 方便为了funcmap数组存储
+	e_c_gs_msg_register_req = 1;
+	e_c_gs_msg_login_req = 2;
+	e_c_gs_msg_config_req = 3;
+	e_c_gs_msg_chapter_map_info_req = 4;
+	e_c_gs_msg_user_info_req = 5;
+	e_c_gs_msg_max = 6;
+};
+
+//gs发给客户端的 有response和notify
+enum e_gs_c_msg{
+	e_gs_c_msg_min = 0 ;//必须为0  从0开始 方便为了funcmap数组存储
+	e_gs_c_msg_register_res = 1 ;
+	e_gs_c_msg_login_res = 2 ;
+	e_gs_c_msg_conifg_res = 3 ;
+	e_gs_c_msg_chapter_map_info_res = 4;
+	e_gs_c_error_report = 5;
+	e_gs_c_msg_user_info_res = 6;
+	e_gs_c_msg_max = 7;
+};
+
+
+enum EGSCErrorCode{
+	EErrorCode_MIN	= 0 ;			//因为初始化就为0 所以这里作为初始化
+	EErrorCode_Success = 1 ;		//操作成功
+	EErrorCode_UnKown_Error = 2 ;		//未知错误
+	EErrorCode_Registe_Already = 3;		//已经注册 不能重复注册！
+	EErrorCode_Account_Not_Exist_Or_Wrong_Password = 4;	//账户不存在！
+	EErrorCode_User_Data_Error = 5;		//用户数据异常
+	EErrorCode_Should_Login_Before_Other = 6;//在有其他操作之前，必须首先登录
+	EErrorCode_Has_Logined = 7 ;		//已登录 不需要重复登录
+	EErrorCode_TASKCONFIG_ERROR = 8;	//任务配置问题
+};
+
+message struct_map_point_info{
+	required int32 map_point_id = 1;	//地图据点ID
+	required int32 not_done_branch_task = 2;//未完成的支线任务数
+};
+
+
+
+//不需要由服务器发给客户端，直接本地存储
+message struct_mappoint{
+	required string id = 1;
+	required string name_ch = 2;
+	optional string name_en = 3;
+	optional int32 chapterType = 4;
+	optional int32 pointType = 5;
+	optional string iconid = 6;
+};
+
+message struct_task{
+	required string id = 1;
+}
+
+message struct_sub_task{
+	required string id = 1;
+};
+
+//<<< common -------------
+
+
+
+message gs_c_config_req{};
+message gs_c_config_res{
+	
+	repeated struct_mappoint	mappoints = 1;
+	repeated struct_task		tasks = 2;	
+	repeated struct_sub_task	sub_tasks = 3;	
+};
+
+/*
+message gs_c_register_req{
+
+	required int32 plantform_id = 1;	//渠道平台id
+	required int32 plantform_sub_id = 2;	//渠道平台的子类型id 为了细分 比如官方 有 pc官网 手机官网
+	required string account = 3;	//账户
+	required string password = 4;	//密码
+	//optional string name = 5;
+	//optional string email = 6;
+};
+
+message gs_c_register_res{
+	required int32 error_code = 1;	//错误码
+	required int32 user_id = 2;	//用户id
+	//required string	token = 3;	//令牌
+};
+
+message gs_c_login_req{
+	required int32 plantform_id = 1;	//渠道平台id
+	required int32 plantform_sub_id = 2;	//渠道平台的子类型id 为了细分 比如官方 有 pc官网 手机官网
+	required string account = 3;	//账户
+	required string password = 4;	//密码
+};
+
+message gs_c_login_res{
+	optional int32 error_code = 1;	//错误码
+	optional int32 user_id = 2;	//用户id
+	//required string	token = 3;	//令牌
+};
+
+
+
+message gs_c_chapter_map_info_req{
+
+};
+
+message gs_c_chapter_map_info_res{
+	required int32 error_code = 1;//错误码
+	required int32 cur_main_task_map_point = 2;	//当前待完成的主线任务所在据点
+	repeated struct_map_point_info map_point_info = 3;//该章节可访问地图据点的信息
+};
+
+
+message gs_c_error_report{
+	required int32 error_code = 1;	//错误码
+};
+
+message gs_c_user_info_req{};
+message gs_c_user_info_res{
+	required int32 error_code = 1;//错误码
+	required string name = 2;
+	required int32 level = 3;
+	required int32 gold = 4;
+};
+*/
+
+message gs_c_enter_gs_req{
+	required string token = 1;	//accountserver给予的令牌
+};
+
+message gs_c_enter_gs_res{
+	optional int32 error_code = 1;	//错误码
+
+	//configinfo
+
+	//userinfo
+};

@@ -1,0 +1,66 @@
+/**
+* @file:   ./proto/equip.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message EQUIP{
+    /** 英雄装备id */
+    required string id = 1 [default = ""];
+    /** 装备部位 */
+    required int32 pos = 2 [default = 0];
+    /** 中文名称 */
+    required string name_ch = 3 [default = ""];
+    /** 英文名称 */
+    required string name_en = 4 [default = ""];
+    /** 品质 */
+    required int32 quality = 5 [default = 0];
+    /** 生命 */
+    required int32 health = 6 [default = 0];
+    /** 生命成长 */
+    required int32 healthGrow = 7 [default = 0];
+    /** 攻击 */
+    required int32 damage = 8 [default = 0];
+    /** 攻击成长 */
+    required int32 damageGrow = 9 [default = 0];
+    /** 护甲 */
+    required int32 pdd = 10 [default = 0];
+    /** 护甲成长 */
+    required int32 pddGrow = 11 [default = 0];
+    /** 魔抗 */
+    required int32 mdd = 12 [default = 0];
+    /** 魔抗成长 */
+    required int32 mddGrow = 13 [default = 0];
+    /** 命中等级 */
+    required int32 hitLevel = 14 [default = 0];
+    /** 命中成长 */
+    required int32 hitGrow = 15 [default = 0];
+    /** 闪避等级 */
+    required int32 dodgeLevel = 16 [default = 0];
+    /** 闪避成长 */
+    required int32 dodgeGrow = 17 [default = 0];
+    /** 暴击等级 */
+    required int32 criLevel = 18 [default = 0];
+    /** 暴击成长 */
+    required int32 criGrow = 19 [default = 0];
+    /** 韧性等级 */
+    required int32 tenacityLevel = 20 [default = 0];
+    /** 韧性成长 */
+    required int32 tenacityGrow = 21 [default = 0];
+    /** 穿透 */
+    required int32 pddPierce = 22 [default = 0];
+    /** 穿透成长 */
+    required int32 pddPierceGrow = 23 [default = 0];
+    /** 进化需求材料 */
+    required string needs = 24 [default = ""];
+    /** 材料数量 */
+    required string needCounts = 25 [default = ""];
+    /** 进化后英雄装备 */
+    required string nextId = 26 [default = ""];
+    /** 图标ID */
+    required string icon = 27 [default = ""];
+}
+
+message EQUIP_ARRAY {
+    repeated EQUIP items = 1;
+}
