@@ -1,1 +1,0 @@
-protobuf-net-master 的protoGen工程中生成过来的！！
