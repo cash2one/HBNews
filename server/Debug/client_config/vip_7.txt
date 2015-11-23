@@ -1,0 +1,1 @@
+{"data":[{"id":"ArenaTimePrice_1","price":50},{"id":"ArenaTimePrice_2","price":100},{"id":"ArenaTimePrice_5","price":150},{"id":"ArenaTimePrice_9","price":200}]}

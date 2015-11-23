@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EnterCondition>
+  <!--基本限制，所以任务都会走的这个限制-->
+  <BaseEnterCondition>
+    <!--职业条件限制-->
+    <Condition Type="Occuptation">
+      <Item Type ="Warrior" NoLessThan="" NoMoreThan="3"/>
+      <Item Type="Archer" NoLessThan="" NoMoreThan="3" />
+      <Item Type="Mage" NoLessThan="" NoMoreThan="3"/>
+      <Item Type="Auxiliary" NoLessThan="" NoMoreThan="3"/>
+    </Condition>
+  </BaseEnterCondition>
+
+  <!--具体任务限制-->
+  <TaskEenterCondition TaskID="1">
+    <Condition Type="0">
+      <Item Type="0" NoLessThan="0" NoMoreThan="0"/>
+    </Condition>
+
+    <!--职业条件限制-->
+    <Condition Type="Occuptation">
+      <Item Type ="Warrior" NoLessThan="" NoMoreThan=""/>
+      <Item Type="Archer" NoLessThan="" NoMoreThan="" />
+      <Item Type="Mage" NoLessThan="" NoMoreThan=""/>
+      <Item Type="Auxiliary" NoLessThan="" NoMoreThan=""/>
+    </Condition>
+
+    <!--势力限制-->
+    <Condition Type="Area" >
+      <Item Type ="Huaxia" NoLessThan="" NoMoreThan=""/>
+      <Item Type="Dahe" NoLessThan="" NoMoreThan=""/>
+      <Item Type="Europe" NoLessThan="" NoMoreThan="" />
+    </Condition>
+
+    <!--自然属性限制  如果不填某个属性的信息 则-->
+    <Condition Type="NatureProperty">
+      <Item Type ="Huo" NoLessThan="" NoMoreThan=""/>
+      <Item Type ="Feng" NoLessThan="" NoMoreThan=""/>
+      <Item Type ="Shui" NoLessThan="" NoMoreThan=""/>
+      <Item Type ="Guang" NoLessThan="" NoMoreThan=""/>
+      <Item Type ="An" NoLessThan="" NoMoreThan=""/>
+    </Condition>
+  
+  </TaskEenterCondition>
+    
+</EnterCondition>

@@ -1,0 +1,16 @@
+/**
+* @file:   ./proto/aoyi.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message AOYI{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 伤害系数 */
+    required float factor = 2 [default = 0];
+}
+
+message AOYI_ARRAY {
+    repeated AOYI items = 1;
+}

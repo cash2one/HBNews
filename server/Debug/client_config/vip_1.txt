@@ -1,0 +1,1 @@
+{"data":[{"id":"PowerPrice_1","needGems":50},{"id":"PowerPrice_3","needGems":100},{"id":"PowerPrice_6","needGems":200},{"id":"PowerPrice_9","needGems":400}]}

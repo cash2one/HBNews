@@ -1,0 +1,1 @@
+{"data":[{"id":"ShopResetPrice_1","needGems":20},{"id":"ShopResetPrice_2","needGems":40},{"id":"ShopResetPrice_3","needGems":60},{"id":"ShopResetPrice_4","needGems":80},{"id":"ShopResetPrice_5","needGems":100}]}

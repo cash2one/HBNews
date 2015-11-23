@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<config>
+	<DB>
+		<host>127.0.0.1</host>
+		<port>3307</port>
+		<user>wh</User>
+		<passwd>123456</passwd>
+		<db>wh_account</db>
+	</DB>
+
+	<!--面向玩家的服务器链接配置-->
+	<Server_For_User>
+		<!--
+		<ip>192.168.199.202</ip>
+		-->
+		<ip>127.0.0.1</ip>
+		<port>54320</port>
+	</Server_For_User>
+
+	<!--需要去连的account server服务器链接配置-->
+	<Server_For_GS>
+		<!--
+		<ip>192.168.199.202</ip>
+		-->
+		<ip>127.0.0.1</ip>
+		<port>54321</port>
+	</Server_For_GS>
+
+</config>

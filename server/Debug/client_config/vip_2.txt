@@ -1,0 +1,1 @@
+{"data":[{"id":"BuyGoldsPrice_1","needGems":10},{"id":"BuyGoldsPrice_2","needGems":20},{"id":"BuyGoldsPrice_7","needGems":40},{"id":"BuyGoldsPrice_11","needGems":60},{"id":"BuyGoldsPrice_16","needGems":80}]}

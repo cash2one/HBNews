@@ -1,0 +1,28 @@
+/**
+* @file:   ./proto/bag.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BAG{
+    /** 背包类物品id */
+    required string id = 1 [default = ""];
+    /** 用途 */
+    required int32 useType = 2 [default = 0];
+    /** 品质 */
+    required int32 quality = 3 [default = 0];
+    /** 出售价格 */
+    required int32 sellPrice = 4 [default = 0];
+    /** 产出 */
+    required string exp = 5 [default = ""];
+    /** 合成配方 */
+    required string needs = 6 [default = ""];
+    /** 合成配方对应物品数量 */
+    required string needCounts = 7 [default = ""];
+    /** 合成需要金币数 */
+    required int32 needGolds = 8 [default = 0];
+}
+
+message BAG_ARRAY {
+    repeated BAG items = 1;
+}

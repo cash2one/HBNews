@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<config>
+	<DB>
+		<host>127.0.0.1</host>
+		<port>3307</port>
+		<user>wh</User>
+		<passwd>123456</passwd>
+		<db>wh</db>
+	</DB>
+
+	<!--面向玩家的服务器链接配置-->
+	<Server_For_User>
+		<!--
+		<ip>192.168.199.202</ip>
+		-->
+		<ip>127.0.0.1</ip>
+		<port>54322</port>
+	</Server_For_User>
+
+	<!--需要去连的account server服务器链接配置-->
+	<Client_For_AS>
+		<!--
+		<ip>192.168.199.202</ip>
+		-->
+		<ip>127.0.0.1</ip>
+		<port>54321</port>
+	</Client_For_AS>
+	
+		<!--连接DBSvr服务器连接配置-->
+	<Client_For_DBS>
+		<ip>127.0.0.1</ip>
+		<port>54323</port>
+	</Client_For_DBS>
+
+	<!--面向GM的服务器链接配置-->
+	<Server_For_GM>
+		<!--
+		<ip>192.168.199.202</ip>
+		-->
+		<ip>127.0.0.1</ip>
+		<port>54324</port>
+	</Server_For_GM>
+
+	<!--链接pay_server服务器的配置-->
+	<Client_For_PS>
+		<!--
+		<ip>192.168.199.202</ip>
+		-->
+		<ip>127.0.0.1</ip>
+		<port>54325</port>
+	</Client_For_PS>
+</config>

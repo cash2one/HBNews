@@ -1,0 +1,34 @@
+/**
+* @file:   ./proto/task.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message TASK{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 类型 */
+    required int32 seriesType = 2 [default = 0];
+    /** 中文任务名 */
+    required string seriesName_ch = 3 [default = ""];
+    /** 奖励ID */
+    required string rewardId = 4 [default = ""];
+    /** 任务开放时间类型 */
+    required int32 openTimeType = 5 [default = 0];
+    /** 任务开放时间 */
+    required string openTime = 6 [default = ""];
+    /** 每日进入总次数 */
+    required int32 totalEnterNum = 7 [default = 0];
+    /** 限制条件 */
+    required string enterLimit = 8 [default = ""];
+    /** 所属城市 --> */
+    required string pointParentId = 9 [default = ""];
+    /** 完成后开启据点id */
+    required string nextPoint = 10 [default = ""];
+    /** 优先级 */
+    required float priority = 11 [default = 0];
+}
+
+message TASK_ARRAY {
+    repeated TASK items = 1;
+}

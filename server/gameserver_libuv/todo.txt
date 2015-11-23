@@ -1,0 +1,35 @@
+mysql的断线重连！
+
+mysql.h有问题！ 先加载windows.h  再加载winsock2！
+
+#ifndef my_socket_defined
+#ifdef _WIN32
+#include <windows.h>
+#ifdef WIN32_LEAN_AND_MEAN
+#include <winsock2.h>
+#endif
+
+
+测试两条协议 在一次receive里面！！
+
+因为libxl需要unicode编码 所以只好让工程编码为unicode！
+
+服务器发送ansi格式中文给客户端 但是客户端是utf8环境（即使那个接收的文件本身是ansi格式也是一样！）
+此时需要把ansi格式的字符串转成utf8！
+
+string s = "这里是测试字符串";
+string utf8_string = Encoding.UTF8.GetString(Encoding.Default.GetBytes(s));
+
+
+System.Text.Encoding.Convert(源编码,目标编码,编码)
+string S= UTF8.GetString(System.Text.Encoding.Convert(GB2312,UTF8,GB2312.GetBytes(str)));  
+
+
+def的#include在前面 会有问题
+
+
+确认是否会重定义FATAL错误
+def.h里面有一个FATAL
+E:\XGame\common\protobuf\include\google\protobuf\stubs\common.h里面也有FATAl：
+#define GOOGLE_CHECK(EXPRESSION) \
+  GOOGLE_LOG_IF(FATAL, !(EXPRESSION)) << "CHECK failed: " #EXPRESSION ": "
