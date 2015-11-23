@@ -1,3 +1,0 @@
-protobuf-2.5.0 ： C++版的pb 生成的protoc.exe 可以 根据proto文件生成 c++ java python的代码
-protobuf-net-master ： c#版本的pb实现  但是不能根据proto文件生成生成数据类文件，只能自己写数据类
-dotnet-protobufs-master ： c#版本的pb实现 protoGen 可以根据proto文件生成生成数据类文件

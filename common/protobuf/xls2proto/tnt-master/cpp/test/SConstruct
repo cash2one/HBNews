@@ -1,8 +1,0 @@
-import os
-env = Environment(ENV = {'TERM' : os.environ['TERM']})
-env.Append(CPPPATH = ['../', '../detail/', '/Users/jameyli/dev/3rd/googlemack/include/', '/Users/jameyli/dev/3rd/googlemack/gtest/include/', '/usr/local/homebrew/include/',],
-        LIBPATH=['../', '../detail/', '/Users/jameyli/dev/3rd/googlemack/'],
-        LIBS=['tnt', 'tntdetail', 'gmock'],
-        CXXFLAGS="-std=c++11")
-
-env.Program('unit_test', Glob('*.cpp'))
