@@ -1,0 +1,210 @@
+
+//pb的enum不能自动计算 不赋值！ 正好利用这一点强制要求 协议的id需要手工来写 如果要作插入 者后面的id都需要手工+1
+//客户端发给gs的 有response和notify
+enum e_c_gs_msg{
+	e_c_gs_msg_min = 0 ;//必须为0  从0开始 方便为了funcmap数组存储
+	e_c_gs_msg_enter_gs_req = 1;
+	e_c_gs_msg_max = 2;
+};
+
+//gs发给客户端的 有response和notify
+enum e_gs_c_msg{
+	e_gs_c_msg_min = 0 ;//必须为0  从0开始 方便为了funcmap数组存储
+	e_gs_c_msg_enter_gs_res = 1 ;
+	e_gs_c_msg_max = 2;
+};
+
+enum e_gsc_errorcode{
+	e_gsc_errorcode_min	= 0 ;			//因为初始化就为0 所以这里作为初始化
+	e_gsc_errorcode_success = 1 ;			//操作成功
+	e_gsc_errorcode_unknown_error = 2 ;		//未知错误
+	e_gsc_errorcode_not_logined = 3 ;		//未通过登录验证
+};
+
+
+
+//不需要由服务器发给客户端，直接本地存储
+message struct_mappoint{
+	required string id = 1;
+	required string name_ch = 2;
+	optional string name_en = 3;
+	optional int32 chapterType = 4;
+	optional int32 pointType = 5;
+	optional string iconid = 6;
+};
+
+/**
+* @file:   ./proto/chapter.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+message CHAPTER{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 中文名称 */
+    required string name_ch = 2 [default = ""];
+    /** 英文名称 */
+    required string name_en = 3 [default = ""];
+    /** 所属大章 */
+    required int32 capterType = 4 [default = 0];
+    /** 类型 */
+    required int32 pointType = 5 [default = 0];
+    /** 包含系列任务（*） */
+    required string seriesTaskId = 6 [default = ""];
+    /** iconid */
+    required string iconId = 7 [default = ""];
+    /** 解锁需要通关小点 */
+    required string openPointId = 8 [default = ""];
+}
+
+message CHAPTER_ARRAY {
+    repeated CHAPTER items = 1;
+}
+/**
+* @file:   ./proto/task.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message TASK{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 类型 */
+    required int32 seriesType = 2 [default = 0];
+    /** iconid */
+    required string iconId = 3 [default = ""];
+    /** 中文任务名 */
+    required string seriesName_ch = 4 [default = ""];
+    /** 英文人物名 */
+    required string seriesName_en = 5 [default = ""];
+    /** 奖励 */
+    required string rewardId = 6 [default = ""];
+    /** 奖励数量 */
+    required int32 rewardCount = 7 [default = 0];
+    /** 任务开放开始时间 */
+    required string beginTime = 8 [default = ""];
+    /** 任务开放结束时间 */
+    required string endTime = 9 [default = ""];
+    /** 时间限制类型 */
+    required int32 timeLimitType = 10 [default = 0];
+    /** 普通日期参数 */
+    required string dayParam = 11 [default = ""];
+    /** 每周日期参数 */
+    required string weekParam = 12 [default = ""];
+    /** 时间段参数 */
+    required string timeParam = 13 [default = ""];
+    /** 属性限制 */
+    required string natureLimit = 14 [default = ""];
+    /** 势力限制 */
+    required string forceLimit = 15 [default = ""];
+    /** 职业限制 */
+    required string professionLimit = 16 [default = ""];
+    /** 所属城市 --> */
+    required string pointParentId = 17 [default = ""];
+    /** 完成后开启据点id */
+    required string nextPoint = 18 [default = ""];
+    /** 优先级 */
+    required float priority = 19 [default = 0];
+}
+
+message TASK_ARRAY {
+    repeated TASK items = 1;
+}
+/**
+* @file:   ./proto/sub_task.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message SUB_TASK{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 对应的每场战斗难度系数 */
+    required string diffs = 2 [default = ""];
+    /** 对应的每场战斗时间限制（秒） */
+    required string totalTimes = 3 [default = ""];
+    /** 中文任务名称 */
+    required string name_ch = 4 [default = ""];
+    /** 英文任务名称 */
+    required string name_en = 5 [default = ""];
+    /** 中文任务说明 */
+    required string des_ch = 6 [default = ""];
+    /** 英文任务说明 */
+    required string des_en = 7 [default = ""];
+    /** 消耗体力 */
+    required int32 expendSt = 8 [default = 0];
+    /** 战斗场次 */
+    required int32 waveCount = 9 [default = 0];
+    /** 总挑战次数 */
+    required int32 fightCount = 10 [default = 0];
+    /** 子任务面板显示掉落 */
+    required string showDrop = 11 [default = ""];
+    /** 账号获得经验 */
+    required int32 idExp = 12 [default = 0];
+    /** 英雄获得经验 */
+    required int32 heroExp = 13 [default = 0];
+    /** 获得金币 */
+    required int32 dropGold = 14 [default = 0];
+    /** 所属系列任务 --> */
+    required string pointParentId = 15 [default = ""];
+    /** 优先级 */
+    required float priority = 16 [default = 0];
+}
+
+message SUB_TASK_ARRAY {
+    repeated SUB_TASK items = 1;
+}
+/**
+* @file:   ./proto/battle.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BATTLE{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 怪物id */
+    required string infos = 2 [default = ""];
+    /** 位置 */
+    required string positions = 3 [default = ""];
+}
+
+message BATTLE_ARRAY {
+    repeated BATTLE items = 1;
+}
+
+
+message c_gs_config_req{};
+message gs_c_config_res{
+	optional CHAPTER_ARRAY chapter = 1;
+	optional TASK_ARRAY task = 2;
+	optional SUB_TASK_ARRAY sub_task = 3;
+	optional BATTLE_ARRAY battle = 4;
+};
+
+//<<< common -------------
+
+message c_gs_enter_gs_req{
+	required bytes token = 1;	//accountserver给予客户端和gs的令牌
+};
+
+message gs_c_enter_gs_res{
+	required int32 error_code = 1;	//错误码
+	
+	
+	//>>>userinfo
+	//1. 当前章节的信息！
+	optional int32 cur_main_task_map_point = 2;	//当前待完成的主线任务所在据点
+
+		message struct_map_point_info{
+			required int32 map_point_id = 1;	//地图据点ID
+			required int32 not_done_branch_task = 2;//未完成的支线任务数
+		};
+
+	repeated struct_map_point_info map_point_info = 3;//该章节可访问地图据点的信息
+	
+
+	//>>>configinfo
+	
+};
+

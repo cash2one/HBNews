@@ -1,0 +1,43 @@
+
+//道具信息序列化到db使用！
+
+
+message db_user_hero_equip{
+	/** 英雄id */
+	required uint32 equip_id = 1 [default = 0];
+	required uint32 level = 2 [default = 0];
+	required uint32 quality = 3 [default = 0];
+}
+
+message db_user_hero_skill{
+	/** 英雄id */
+	required uint32 skill_id = 1 [default = 0];
+	required uint32 level = 2 [default = 0];
+}
+
+message db_user_hero{
+    /** 英雄id */
+    required uint32 hero_id = 1 [default = 0];
+    /** 星级 */
+    required uint32 star = 2 [default = 0];
+    /** 等级 */
+    required uint32 level = 3 [default = 0];
+    /** 品质 */
+    required uint32 quality = 4 [default = 0];
+    /** 当前经验 */
+    required uint32 cur_exp = 5 [default = 0];
+
+    /** 当前技能点 */
+    required uint32 skill_point = 6 [default = 0];
+    /** 上一次更新技能点数量的时间 */
+    required uint32 skill_point_update_timestamp = 7 [default = 0];
+
+    /** 装备 */
+    repeated db_user_hero_equip equips = 8 ;
+    /** 技能 */
+    repeated db_user_hero_skill skills = 9 ;
+}
+
+message db_user_hero_array {
+    repeated db_user_hero elements = 1;
+}

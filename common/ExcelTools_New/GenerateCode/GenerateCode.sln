@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenerateCode", "GenerateCode.vcproj", "{3B65578A-A864-46BB-AF8C-C42C431AA6E6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenerateExcel", "..\GenerateExcel\GenerateExcel.vcproj", "{B7D284A5-823C-4D92-861C-355334F2F336}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GenerateExcelFromTable", "..\GenerateExcelFromTable\GenerateExcelFromTable.vcproj", "{AE8A6A28-8E4E-4DF4-8131-90BFFB6452F4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoadExcel", "..\LoadExcel\LoadExcel.vcproj", "{F5756790-CD6C-4BAA-BBAB-814E6CA2CB58}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B65578A-A864-46BB-AF8C-C42C431AA6E6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3B65578A-A864-46BB-AF8C-C42C431AA6E6}.Debug|Win32.Build.0 = Debug|Win32
+		{3B65578A-A864-46BB-AF8C-C42C431AA6E6}.Release|Win32.ActiveCfg = Release|Win32
+		{3B65578A-A864-46BB-AF8C-C42C431AA6E6}.Release|Win32.Build.0 = Release|Win32
+		{B7D284A5-823C-4D92-861C-355334F2F336}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B7D284A5-823C-4D92-861C-355334F2F336}.Debug|Win32.Build.0 = Debug|Win32
+		{B7D284A5-823C-4D92-861C-355334F2F336}.Release|Win32.ActiveCfg = Release|Win32
+		{B7D284A5-823C-4D92-861C-355334F2F336}.Release|Win32.Build.0 = Release|Win32
+		{AE8A6A28-8E4E-4DF4-8131-90BFFB6452F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AE8A6A28-8E4E-4DF4-8131-90BFFB6452F4}.Debug|Win32.Build.0 = Debug|Win32
+		{AE8A6A28-8E4E-4DF4-8131-90BFFB6452F4}.Release|Win32.ActiveCfg = Release|Win32
+		{AE8A6A28-8E4E-4DF4-8131-90BFFB6452F4}.Release|Win32.Build.0 = Release|Win32
+		{F5756790-CD6C-4BAA-BBAB-814E6CA2CB58}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F5756790-CD6C-4BAA-BBAB-814E6CA2CB58}.Debug|Win32.Build.0 = Debug|Win32
+		{F5756790-CD6C-4BAA-BBAB-814E6CA2CB58}.Release|Win32.ActiveCfg = Release|Win32
+		{F5756790-CD6C-4BAA-BBAB-814E6CA2CB58}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

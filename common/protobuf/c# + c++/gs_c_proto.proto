@@ -1,0 +1,2870 @@
+//协议版本号
+//uint32 GSC_VERSION = 1;
+
+//pb的enum不能自动计算 不赋值！ 正好利用这一点强制要求 协议的id需要手工来写 如果要作插入 者后面的id都需要手工+1
+//客户端发给gs的 有request和report
+enum e_msg_c_gs{
+	e_msg_c_gs_min = 0 ;//必须为0  从0开始 方便为了funcmap数组存储
+	e_msg_c_gs_enter_gs_req = 1;		//进入GS
+	e_msg_c_gs_config_req = 2;		//拉取配置
+	e_msg_c_gs_user_info_req = 3;		//获取玩家信息
+	e_msg_c_gs_start_sub_task_req = 4;	//进入副本
+	e_msg_c_gs_end_sub_task_req = 5;	//副本完成
+	e_msg_c_gs_invoke_hero_req = 6;		//召唤英雄
+	e_msg_c_gs_leave_gs_req = 7;		//断开客户端链接 并清理在线状态 和用户信息
+	e_msg_c_gs_equip_level_up_req = 8;	//英雄装备升级请求
+	e_msg_c_gs_equip_evolution_req = 9;	//英雄装备进化请求
+	e_msg_c_gs_sell_req = 10;		//出售
+	e_msg_c_gs_fragment_compound_req = 11;	//碎片合成
+	e_msg_c_gs_mail_opt_req = 12;		//邮箱操作
+	e_msg_c_gs_hero_evolution_req = 13;	//英雄突破
+	e_msg_c_gs_hero_star_up_req = 14;	//英雄升星
+	e_msg_c_gs_skill_level_up_req = 15;	//技能升级
+	e_msg_c_gs_invoke_req = 16;		//祭坛召唤
+	e_msg_c_gs_buy_req = 17;		//购买
+	e_msg_c_gs_server_time_req = 18;	//请求服务器时间
+	//e_msg_c_gs_get_activity_task_req = 19;	//请求可显示的活动任务列表
+	e_msg_c_gs_use_item_req = 19;		//使用道具请求
+	e_msg_c_gs_shop_buy_item_req = 20;	//商店购买道具
+	e_msg_c_gs_shop_refresh_req = 21;	//商店刷新
+	e_msg_c_gs_shop_info_req = 22;		//获取最新的商店信息
+	e_msg_c_gs_arena_refresh_match_req = 23;	//竞技场刷新对手
+	e_msg_c_gs_arena_update_team_req = 24;	//更新竞技场出战队伍信息
+	e_msg_c_gs_arena_start_challenge_req = 25;	//竞技场开始挑战
+	e_msg_c_gs_arena_end_challenge_req = 26;	//竞技场结束挑战
+	e_msg_c_gs_arena_challenge_reset_cd_req = 27;	//竞技场挑战刷新cd
+	e_msg_c_gs_arena_challenge_reset_num_req = 28;	//竞技场挑战刷新数量
+	e_msg_c_gs_arena_log_req = 29;			//获取竞技场日志
+	e_msg_c_gs_arena_ranks_req = 30;		//获取竞技场排行榜
+	e_msg_c_gs_get_mission_reward_req = 31;		//获取任务奖励请求
+	e_msg_c_gs_sign_req = 32;			//签到请求
+	e_msg_c_gs_sign_add_req = 33;			//补签请求
+	e_msg_c_gs_arena_search_req = 34;		//竞技场搜索某玩家
+	e_msg_c_gs_diamond_speed_kill_req = 35;		//钻石扫荡
+	e_msg_c_gs_head_or_frame_change_req = 36;	//头像或者头像边框更改
+	e_msg_c_gs_finish_novice_guide_req = 37;	//完成新手引导
+	e_msg_c_gs_edit_player_info_req = 38;		//编辑玩家信息
+	e_msg_c_gs_json_config_version_req = 39;	//客户端json配置文件的版本信息
+	e_msg_c_gs_json_config_req = 40;		//客户端json配置文件
+	e_msg_c_gs_user_friend_op_req = 41;		//好友操作
+	e_msg_c_gs_search_user_req = 42;		//搜索玩家
+	e_msg_c_gs_chat_req = 43;			//聊天
+	e_msg_c_gs_fight_power_req = 44;		//战力
+	e_msg_c_gs_rank_req = 45;			//排行榜
+
+	//>>>> 公会操作
+	e_msg_c_gs_guild_new_req = 46;			//创建公会
+	e_msg_c_gs_guild_edit_req = 47;			//修改公会信息
+	e_msg_c_gs_guild_delete_req = 48;		//解散公会
+	e_msg_c_gs_guild_apply_list_req = 49;		//列出公会加入申请
+	e_msg_c_gs_guild_apply_op_req = 50;		//非会员申请快速申请 或者会长副会长处理公会加入申请
+	e_msg_c_gs_guild_invite_req = 51;		//邀请加入公会 这个功能设计不完善 暂时不做
+	e_msg_c_gs_guild_member_op_req = 52;		//管理员编辑会员, 逐出会员
+	e_msg_c_gs_guild_boss_refresh_req = 53;		//boss激活或者复活
+
+	e_msg_c_gs_guild_search_req = 54;		//搜索公会
+	e_msg_c_gs_guild_list_req = 55;			//列出公会 多种列出方式
+	e_msg_c_gs_guild_info_req = 56;			//我的公会信息
+
+	e_msg_c_gs_guild_boss_list_req = 57;		//boss列表
+	e_msg_c_gs_guild_boss_info_req = 58;		//boss信息 包含已经阵亡的英雄列表 和 已经重置阵亡英雄的次数
+	e_msg_c_gs_guild_boss_attack_req = 59;		//进攻boss
+	e_msg_c_gs_guild_boss_dead_hero_reset_req = 60;	//会员复活被boss击杀的英雄
+	e_msg_c_gs_guild_boss_attacker_rank_req = 61;	//进攻boss
+	
+	//<<<<<< 公会操作
+
+	e_msg_c_gs_crusade_start_req = 62;		//远征开始
+	e_msg_c_gs_crusade_end_req = 63;		//远征结束
+	e_msg_c_gs_crusade_hero_life_req = 64;		//英雄复活
+	e_msg_c_gs_crusade_reset_req = 65;		//远征重置
+	e_msg_c_gs_crusade_promote_award_req = 66;	//提升奖励
+	e_msg_c_gs_crusade_buff_refresh_req = 67;	//buff刷新
+	e_msg_c_gs_max = 68;
+	};
+
+//gs发给客户端的 有response和notify
+enum e_msg_gs_c{
+	e_msg_gs_c_min = 0 ;//必须为0  从0开始 方便为了funcmap数组存储
+	e_msg_gs_c_enter_gs_res = 1 ;
+	e_msg_gs_c_config_res = 2;
+	e_msg_gs_c_user_info_res = 3;
+	e_msg_gs_c_start_sub_task_res = 4;
+	e_msg_gs_c_end_sub_task_res = 5;
+	e_msg_gs_c_invoke_hero_res = 6;
+	e_msg_gs_c_equip_level_up_res = 7;	//
+	e_msg_gs_c_equip_evolution_res = 8;	//
+	e_msg_gs_c_leave_gs_res = 9;	//断开客户端链接 并清理在线状态 和用户信息
+	e_msg_gs_c_sell_res = 10;
+	e_msg_gs_c_fragment_compound_res = 11;
+	e_msg_gs_c_mail_opt_res = 12;
+	e_msg_gs_c_mail_ntf = 13;
+	e_msg_gs_c_hero_evolution_res = 14;
+	e_msg_gs_c_hero_star_up_res = 15;
+	e_msg_gs_c_skill_level_up_res = 16;
+	e_msg_gs_c_invoke_res = 17;
+	e_msg_gs_c_buy_res = 18;
+	e_msg_gs_c_server_time_res = 19;
+	//e_msg_gs_c_get_activity_task_res = 20;
+	e_msg_gs_c_use_item_res = 20;
+	e_msg_gs_c_shop_buy_item_res = 21;		//商店购买道具
+	e_msg_gs_c_shop_refresh_res = 22;		//商店刷新
+	e_msg_gs_c_shop_info_res = 23;			//获取最新的商店信息
+	e_msg_gs_c_arena_refresh_match_res = 24;	//竞技场刷新对手
+	e_msg_gs_c_arena_update_team_res = 25;		//更新竞技场出战队伍信息
+	e_msg_gs_c_arena_start_challenge_res = 26;	//竞技场挑战
+	e_msg_gs_c_arena_end_challenge_res = 27;	//竞技场挑战
+	e_msg_gs_c_arena_challenge_reset_cd_res = 28;	//竞技场挑战刷新cd
+	e_msg_gs_c_arena_challenge_reset_num_res = 29;	//竞技场挑战刷新数量
+	e_msg_gs_c_arena_challenge_ntf = 30;		//竞技场被玩家击败或者成功防守的通知
+	e_msg_gs_c_arena_log_res = 31;			//获取竞技场日志
+	e_msg_gs_c_arena_ranks_res = 32;		//获取竞技场排行榜
+	e_msg_gs_c_get_mission_reward_res = 33;		//任务领取
+	e_msg_gs_c_mission_ntf = 34;			//任务通知
+	e_msg_gs_c_sign_res = 35;			//每日签到
+	e_msg_gs_c_sign_add_res = 36;			//补签
+	e_msg_gs_c_arena_search_res = 37;		//竞技场搜索某玩家
+	e_msg_gs_c_diamond_speed_kill_res= 38;		//钻石扫荡
+	e_msg_gs_c_head_or_frame_change_res = 39;	//头像或者头像框
+	e_msg_gs_c_finish_novice_guide_res = 40;	//新手引导
+	e_msg_gs_c_edit_player_info_res = 41;		//编辑玩家信息
+	e_msg_gs_c_marquee_ntf = 42;			//跑马灯通知
+	e_msg_gs_c_element_ntf = 43;			//道具通知，GM工具添加		
+	e_msg_gs_c_json_config_version_res = 44;	//客户端json配置文件版本信息
+	e_msg_gs_c_json_config_res = 45;		//客户端json配置文件
+	e_msg_gs_c_user_friend_op_res = 46;
+	e_msg_gs_c_user_friend_ntf = 47;		//好友消息通知
+	e_msg_gs_c_search_user_res = 48;
+	e_msg_gs_c_chat_res = 49;
+	e_msg_gs_c_chat_ntf = 50;
+	e_msg_gs_c_fight_power_res = 51;		//战力
+	e_msg_gs_c_rank_res = 52;			//排行榜
+
+	//>>>> 公会操作
+	e_msg_gs_c_guild_new_res = 53;			//创建公会
+	e_msg_gs_c_guild_edit_res = 54;			//修改公会信息
+	e_msg_gs_c_guild_delete_res = 55;		//解散公会
+	e_msg_gs_c_guild_apply_list_res = 56;		//列出公会加入申请
+	e_msg_gs_c_guild_apply_op_res = 57;		//非会员申请或快速申请公会 或者会长副会长处理公会加入申请
+	e_msg_gs_c_guild_invite_res = 58;		//邀请加入公会 这个功能设计不完善 暂时不做
+	e_msg_gs_c_guild_member_op_res = 59;		//管理员编辑会员, 逐出会员
+	e_msg_gs_c_guild_boss_refresh_res = 60;		//boss激活或者复活
+
+	e_msg_gs_c_guild_search_res = 61;		//搜索公会
+	e_msg_gs_c_guild_list_res = 62;			//列出公会 多种列出方式
+	e_msg_gs_c_guild_info_res = 63;			//我的公会信息
+
+	e_msg_gs_c_guild_boss_list_res = 64;		//boss列表
+	e_msg_gs_c_guild_boss_info_res = 65;		//boss信息 包含已经阵亡的英雄列表 和 已经重置阵亡英雄的次数
+	e_msg_gs_c_guild_boss_attack_res = 66;		//进攻boss
+	e_msg_gs_c_guild_boss_dead_hero_reset_res = 67;	//会员复活被boss击杀的英雄
+	e_msg_gs_c_guild_boss_attacker_rank_res = 68;	//进攻boss
+	e_msg_gs_c_guild_quit_ntf = 69;			//玩家主动退出 或者 被踢 或者所在的公会被解散
+	e_msg_gs_c_guild_join_ntf = 70;			//玩家申请被接受 而且玩家在线时 则会收到此通知
+	//<<<<<< 公会操作
+
+	e_msg_gs_c_crusade_start_res = 71;		//远征开始
+	e_msg_gs_c_crusade_end_res = 72;		//远征结束
+	e_msg_gs_c_crusade_hero_life_res = 73;		//英雄复活
+	e_msg_gs_c_crusade_reset_res = 74;		//远征重置
+	e_msg_gs_c_crusade_promote_award_res = 75;	//提升奖励
+	e_msg_gs_c_crusade_buff_refresh_res = 76;	//刷新buff
+	e_msg_gs_c_max = 77;
+};
+
+enum e_gsc_errorcode{
+	e_gsc_errorcode_min	= 0 ;			//因为初始化就为0 所以这里作为初始化
+	e_gsc_errorcode_success = 1 ;			//操作成功
+	e_gsc_errorcode_unknown_error = 2 ;		//未知错误
+	e_gsc_errorcode_not_logined = 3 ;		//未通过登录验证
+	e_gsc_errorcode_not_get_user_info = 4 ;		//客户端还未获得玩家信息
+	e_gsc_errorcode_cannot_start_sub_task = 5 ;	//不能进入该子任务 某些条件不符合 比如体力值不够 玩家的推图还没有到这里等等
+	e_gsc_errorcode_cannot_end_sub_task = 6 ;	//不能结束子任务 可能都没有进入一个任务！
+	e_gsc_errorcode_sub_task_time_out = 7;		//子任务超时
+	e_gsc_errorcode_user_info_not_exsit_or_has_error = 8;//玩家信息不存在或者有错误
+	e_gsc_errorcode_user_using_by_another_connect	= 9 ; //玩家信息当前正在被别的链接使用！
+	e_gsc_errorcode_no_enough_consume_or_reach_max = 10;	//没有足够的消耗品 比如召唤英雄 升星 升级时  或者已经到达上限！
+	e_gsc_errorcode_no_enough_consume = 11;		//没有足够的消耗
+	e_gsc_errorcode_op_not_support = 12;		//不支持的操作
+	e_gsc_errorcode_no_enough_health = 13;		//没有足够的体力
+	e_gsc_errorcode_not_enough_item = 14;		//道具数量不足
+	e_gsc_errorcode_not_enough_diamond = 15;	//钻石不足(如买金币，体力，技能点,钻石扫荡等)
+	e_gsc_errorcode_not_enough_times = 16;		//次数不足(如买金币，体力，技能点等)
+	e_gsc_errorcode_not_enough_bag_space = 17;	//背包空间不足
+	e_gsc_errorcode_vip_level_not_reach = 18;	//vip等级不足
+	e_gsc_errorcode_health_reach_max = 19;		//体力到达上限(购买体力或每日领取体力时体力到达上限)
+	e_gsc_errorcode_gold_not_enough = 20;		//金币不足
+	e_gsc_errorcode_level_not_enough = 21;		//等级不足
+	e_gsc_errorcode_equip_quality_not_enough = 22;	//装备等级不足
+	e_gsc_errorcode_not_exist_attach_mail = 23;	//不存在领取类邮件
+	e_gsc_errorcode_speed_kill_not_enough_star = 24;	//扫荡失败 任务没有取得三星
+	e_gsc_errorcode_speed_kill_not_enough_left_enter_num = 25;	//扫荡失败 副本剩余进入次数不足
+	e_gsc_errorcode_speed_kill_exceed_limit = 26;	//超过单次最大扫荡数量
+	e_gsc_errorcode_item_can_not_use = 27;		//此道具不能使用
+	e_gsc_errorcode_shop_no_unlock = 28;		//商店还未解锁
+	e_gsc_errorcode_shop_no_this_item = 29;		//商店没有此道具
+	e_gsc_errorcode_shop_item_sold = 30;		//商店此道具已经售出
+	e_gsc_errorcode_shop_has_refreshed = 31;	//购买失败，商店已经刷新
+	e_gsc_errorcode_arena_contestant_rank_changed = 32;	//竞技场挑战失败，被挑战玩家的排名信息已经改变
+	e_gsc_errorcode_no_this_hero = 33;		//没有此英雄
+	e_gsc_errorcode_hero_exp_full = 34;		//英雄经验值已满
+	e_gsc_errorcode_arena_match_is_fighting = 35;	//竞技场挑战失败 对手正在战斗中
+	e_gsc_errorcode_arena_no_enough_challenge_num = 36;	//竞技场挑战失败 挑战次数已经用完
+	e_gsc_errorcode_arena_challenge_in_cd = 37;	//竞技场挑战失败 还在挑战cd中
+	e_gsc_errorcode_arena_challenge_not_in_cd = 38;	//竞技场刷新挑战cd失败 没在挑战cd中
+	e_gsc_errorcode_arena_challenge_not_enough_buy_num = 39;	//购买竞技场挑战次数失败 今日购买次数已经用完
+	e_gsc_errorcode_arena_challenge_num_not_zero = 40;	//购买竞技场挑战次数失败 挑战次数还有
+	e_gsc_errorcode_arena_i_am_fighting = 41;	//竞技场挑战失败 自己正在战斗中
+	e_gsc_errorcode_arena_cannot_fight_this_contestant = 42;	//竞技场挑战失败, 只能挑战指定选手
+	e_gsc_errorcode_arena_rank_page_out = 43;	//获取排行榜失败, 已超过最大页数
+	e_gsc_errorcode_mission_reward_condition_not_satisfy = 44;	//任务领取条件不足
+	e_gsc_errorcode_mission_already_get_reward = 45;//已经获取奖励
+	e_gsc_errorcode_sign_already_sign_today = 46;	//今日已签到
+	e_gsc_errorcode_sign_no_need_add = 47;		//不需要补签
+	e_gsc_errorcode_sign_no_left_add_times = 48;	//没有补签次数
+	e_gsc_errorcode_sign_confition_not_satisfy = 49;//条件不足
+	e_gsc_errorcode_sign_already_reward = 50;	//累计签到已经领取奖励
+	e_gsc_errorcode_arena_search_no_result = 51;	//竞技场中排行榜中没有找到此人
+	e_gsc_errorcode_guide_pre_guide_not_finish = 52;//前置任务没有完成
+	e_gsc_errorcode_guide_already_finish = 53;	//已经完成
+	e_gsc_errorcode_guide_trigger_condition_not_satisfy = 54;//触发条件不足
+	e_gsc_errorcode_sub_task_has_not_passed = 55;		//此子任务还没有完成过  重置挑战次数失败
+	e_gsc_errorcode_sub_task_not_branch = 56;		//此子任务不是支线任务  重置挑战次数失败
+	e_gsc_errorcode_sub_task_has_left_enter_num = 57;	//此子任务还有剩余挑战次数  重置挑战次数失败
+	e_gsc_errorcode_sub_task_no_enough_reset_num = 58;	//此子任务重置次数已使用完  重置挑战次数失败
+	e_gsc_errorcode_sub_task_no_enter_num_limit = 59;	//此子任务并没有进入次数限制
+	e_gsc_errorcode_edit_player_info_name_too_long = 60;	//昵称太长
+	e_gsc_errorcode_edit_player_info_name_forbid_word = 61;	//昵称含有敏感词汇
+	e_gsc_errorcode_edit_player_info_name_same = 62;	//昵称已经被注册
+	e_gsc_errorcode_json_config_no_some_file = 63;		//请求的某些配置文件不存在
+	e_gsc_errorcode_friend_me_friend_num_reach_max = 64;	//我的好友数量达到上限
+	e_gsc_errorcode_friend_friend_friend_num_reach_max = 65;//确认好友的对方好友数目达到上线了
+	e_gsc_errorcode_friend_apply_num_reach_max = 66;	//好友申请数目达到上限
+	e_gsc_errorcode_friend_already_in_apply_list = 67;	//用户已经在申请列表中
+	e_gsc_errorcode_friend_already_be_friend = 68;		//用户已经是朋友
+	e_gsc_errorcode_friend_del_friend_num_reach_max = 69;	//今日删除好友已经达到上限
+	e_gsc_errorcode_friend_already_give_element_today = 70;	//好友已经赠送过
+	e_gsc_errorcode_friend_affirm_num_reach_max_num = 71;	//好友申请时对方的待确认列表到达上限
+	e_gsc_errorcode_friend_search_user_not_exist = 72;	//搜索的玩家不存在
+	e_gsc_errorcode_chat_user_not_online_or_exist = 73;	//玩家不在线或者不存在
+	e_gsc_errorcode_signature_too_long = 74;		//个性签名太长
+	e_gsc_errorcode_signature_has_forbid_word = 75;		//个性签名中包含屏蔽字
+	e_gsc_errorcode_guild_info_not_exist = 76;		//公会相关的信息不存在
+	e_gsc_errorcode_guild_no_authority = 77;		//公会操作 没有权限
+	e_gsc_errorcode_guild_already_apply = 78;		//公会申请失败 已经申请过 
+	e_gsc_errorcode_guild_user_apply_num_reach_max = 79;	//玩家对公会的申请数目达到上限
+	e_gsc_errorcode_guild_apply_num_reach_max = 80;		//公会被申请数目达到上限
+	e_gsc_errorcode_guild_cannot_apply = 81;		//不能申请
+	e_gsc_errorcode_guild_president_cannot_leave = 82;	//公会还有人时 会长不能退会 请先转让会长
+	e_gsc_errorcode_guild_position_full = 83;		//此公户职位已经满了
+	e_gsc_errorcode_guild_boss_not_open = 84;		//此boss还未开启
+	e_gsc_errorcode_guild_no_enough_coin = 85;		//公会没有足够的 【公会代币】
+	e_gsc_errorcode_crusade_reset_times_not_enough = 86;	//远征重置次数不足
+	e_gsc_errorcode_crusade_promote_times_not_enough = 87;	//提升奖励次数不足
+	e_gsc_errorcode_guild_apply_user_in_cd = 88;		//玩家还在离会cd 不能完成此操作 比如不能建公会，不能通过此玩家的申请，还在离会冷却中
+	e_gsc_errorcode_guild_boss_already_dead = 89;		//公会boss已经挂掉了
+	e_gsc_errorcode_guild_boss_has_not_attacked = 90;	//不能刷新阵亡英雄 因为你还未攻击过本boss
+	e_gsc_errorcode_max = 91;
+};
+
+
+/**
+* @file:   ./proto/aoyi.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message AOYI{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 伤害系数 */
+    required float factor = 2 [default = 0];
+}
+
+message AOYI_ARRAY {
+    repeated AOYI items = 1;
+}
+/**
+* @file:   ./proto/arenaprice.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message ARENAPRICE{
+    /** 次数 */
+    required string id = 1 [default = ""];
+    /** 单次消耗钻石 */
+    required int32 price = 2 [default = 0];
+}
+
+message ARENAPRICE_ARRAY {
+    repeated ARENAPRICE items = 1;
+}
+/**
+* @file:   ./proto/bag.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BAG{
+    /** 背包类物品id */
+    required string id = 1 [default = ""];
+    /** 用途 */
+    required int32 useType = 2 [default = 0];
+    /** 品质 */
+    required int32 quality = 3 [default = 0];
+    /** 出售价格 */
+    required int32 sellPrice = 4 [default = 0];
+    /** 产出 */
+    required string exp = 5 [default = ""];
+    /** 合成配方 */
+    required string needs = 6 [default = ""];
+    /** 合成配方对应物品数量 */
+    required string needCounts = 7 [default = ""];
+    /** 合成需要金币数 */
+    required int32 needGolds = 8 [default = 0];
+}
+
+message BAG_ARRAY {
+    repeated BAG items = 1;
+}
+/**
+* @file:   ./proto/battle.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BATTLE{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 怪物id */
+    required string infos = 2 [default = ""];
+    /** 位置 */
+    required string positions = 3 [default = ""];
+}
+
+message BATTLE_ARRAY {
+    repeated BATTLE items = 1;
+}
+/**
+* @file:   ./proto/bossprop.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BOSSPROP{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 对应英雄 */
+    required string pointId = 2 [default = ""];
+    /** 国家 */
+    required int32 area = 3 [default = 0];
+    /** 职业 */
+    required int32 occupation = 4 [default = 0];
+    /** 等级 */
+    required int32 level = 5 [default = 0];
+    /** 生命 */
+    required int32 health = 6 [default = 0];
+    /** 攻击 */
+    required int32 damage = 7 [default = 0];
+    /** 护甲 */
+    required int32 pdd = 8 [default = 0];
+    /** 魔抗 */
+    required int32 mdd = 9 [default = 0];
+    /** 命中等级 */
+    required int32 hitLevel = 10 [default = 0];
+    /** 闪避等级 */
+    required int32 dodgeLevel = 11 [default = 0];
+    /** 暴击等级 */
+    required int32 criLevel = 12 [default = 0];
+    /** 韧性等级 */
+    required int32 tenacityLevel = 13 [default = 0];
+    /** 穿透 */
+    required int32 pddPierce = 14 [default = 0];
+    /** 被动技能 */
+    required string passiveSkillId = 15 [default = ""];
+    /** 被动技能等级 */
+    required string passiveSkillLevel = 16 [default = ""];
+    /** 普通攻击伤害范围 X */
+    required float range_X = 17 [default = 0];
+    /** 普通攻击伤害范围 Y */
+    required float range_Y = 18 [default = 0];
+    /** 普通攻击伤害范围 Z */
+    required float range_Z = 19 [default = 0];
+    /** 攻击速度（m/s） */
+    required float attackSpeed = 20 [default = 0];
+    /** 水平攻击距离（m） */
+    required float h_Dis = 21 [default = 0];
+    /** 垂直攻击距离（m） */
+    required float v_Dis = 22 [default = 0];
+    /** 移动速度(m/s) */
+    required float moveSpeed = 23 [default = 0];
+    /** 星级 */
+    required int32 star = 24 [default = 0];
+    /** 必杀阶段数 */
+    required int32 stage_B = 25 [default = 0];
+    /** 必杀每阶段对应hit数 */
+    required string hitNum_B = 26 [default = ""];
+    /** BOSS的必杀释放时间顺序 */
+    required string skillTimeList = 27 [default = ""];
+    /** BOSS的必杀预警时间 */
+    required string warningTimeList = 28 [default = ""];
+    /** 初始强度 */
+    required int32 maxIntensity = 29 [default = 0];
+    /** 每秒强度恢复（num/s） */
+    required int32 recoverIntensityRate = 30 [default = 0];
+    /** 硬直临界值（必杀可浮空和击退） */
+    required int32 minIntensity = 31 [default = 0];
+    /** 攻击类型 */
+    required int32 type_Normal = 32 [default = 0];
+}
+
+message BOSSPROP_ARRAY {
+    repeated BOSSPROP items = 1;
+}
+/**
+* @file:   ./proto/bossskill.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BOSSSKILL{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 伤害系数 */
+    required float factor = 2 [default = 0];
+    /** 击退距离 */
+    required float distance = 3 [default = 0];
+    /** 浮空高度 */
+    required float height = 4 [default = 0];
+    /** 伤害范围-X */
+    required float range_x = 5 [default = 0];
+    /** 伤害范围-Y */
+    required float range_y = 6 [default = 0];
+    /** 伤害范围-Z */
+    required float range_z = 7 [default = 0];
+    /** hit时间间隔 */
+    required float waitTime = 8 [default = 0];
+}
+
+message BOSSSKILL_ARRAY {
+    repeated BOSSSKILL items = 1;
+}
+/**
+* @file:   ./proto/buff.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message BUFF{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 类型 */
+    required int32 type = 2 [default = 0];
+    /** 持续时间 */
+    required float duration = 3 [default = 0];
+    /** 持续时间的成长值 */
+    required float durationGrow = 4 [default = 0];
+    /** 每跳时间间隔 */
+    required float interval = 5 [default = 0];
+    /** 影响的数值 */
+    required int32 value = 6 [default = 0];
+    /** 影响的数值的成长值 */
+    required int32 valueGrow = 7 [default = 0];
+    /** 作用类型 */
+    required int32 useType = 8 [default = 0];
+    /** 依赖关系 */
+    required int32 lifeLine = 9 [default = 0];
+    /** BUFF类型 */
+    required int32 buffType = 10 [default = 0];
+    /** 可堆叠上限 */
+    required int32 maxLimitCount = 11 [default = 0];
+}
+
+message BUFF_ARRAY {
+    repeated BUFF items = 1;
+}
+/**
+* @file:   ./proto/chaptermap.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message CHAPTERMAP{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 所属大章 */
+    required int32 capterType = 2 [default = 0];
+    /** 类型 */
+    required int32 pointType = 3 [default = 0];
+    /** 开放等级 */
+    required int32 openLevel = 4 [default = 0];
+}
+
+message CHAPTERMAP_ARRAY {
+    repeated CHAPTERMAP items = 1;
+}
+/**
+* @file:   ./proto/coinprice.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message COINPRICE{
+    /** 次数 */
+    required string id = 1 [default = ""];
+    /** 单次消耗钻石 */
+    required int32 needGems = 2 [default = 0];
+}
+
+message COINPRICE_ARRAY {
+    repeated COINPRICE items = 1;
+}
+/**
+* @file:   ./proto/equip.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message EQUIP{
+    /** 英雄装备id */
+    required string id = 1 [default = ""];
+    /** 装备部位 */
+    required int32 pos = 2 [default = 0];
+    /** 中文名称 */
+    required string name_ch = 3 [default = ""];
+    /** 英文名称 */
+    required string name_en = 4 [default = ""];
+    /** 品质 */
+    required int32 quality = 5 [default = 0];
+    /** 生命 */
+    required int32 health = 6 [default = 0];
+    /** 生命成长 */
+    required int32 healthGrow = 7 [default = 0];
+    /** 攻击 */
+    required int32 damage = 8 [default = 0];
+    /** 攻击成长 */
+    required int32 damageGrow = 9 [default = 0];
+    /** 护甲 */
+    required int32 pdd = 10 [default = 0];
+    /** 护甲成长 */
+    required int32 pddGrow = 11 [default = 0];
+    /** 魔抗 */
+    required int32 mdd = 12 [default = 0];
+    /** 魔抗成长 */
+    required int32 mddGrow = 13 [default = 0];
+    /** 命中等级 */
+    required int32 hitLevel = 14 [default = 0];
+    /** 命中成长 */
+    required int32 hitGrow = 15 [default = 0];
+    /** 闪避等级 */
+    required int32 dodgeLevel = 16 [default = 0];
+    /** 闪避成长 */
+    required int32 dodgeGrow = 17 [default = 0];
+    /** 暴击等级 */
+    required int32 criLevel = 18 [default = 0];
+    /** 暴击成长 */
+    required int32 criGrow = 19 [default = 0];
+    /** 韧性等级 */
+    required int32 tenacityLevel = 20 [default = 0];
+    /** 韧性成长 */
+    required int32 tenacityGrow = 21 [default = 0];
+    /** 穿透 */
+    required int32 pddPierce = 22 [default = 0];
+    /** 穿透成长 */
+    required int32 pddPierceGrow = 23 [default = 0];
+    /** 进化需求材料 */
+    required string needs = 24 [default = ""];
+    /** 材料数量 */
+    required string needCounts = 25 [default = ""];
+    /** 进化后英雄装备 */
+    required string nextId = 26 [default = ""];
+    /** 图标ID */
+    required string icon = 27 [default = ""];
+}
+
+message EQUIP_ARRAY {
+    repeated EQUIP items = 1;
+}
+
+/**
+* @file:   ./proto/evolutioncoin.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message EVOLUTIONCOIN{
+    /** 装备品质 */
+    required string id = 1 [default = ""];
+    /** 武器 */
+    required string equip_Weapon = 2 [default = ""];
+    /** 项链 */
+    required string equip_Necklace = 3 [default = ""];
+    /** 衣服 */
+    required string equip_Clothes = 4 [default = ""];
+    /** 腰带 */
+    required string equip_Belt = 5 [default = ""];
+    /** 戒指 */
+    required string equip_Ring = 6 [default = ""];
+    /** 靴子 */
+    required string equip_Boot = 7 [default = ""];
+}
+
+message EVOLUTIONCOIN_ARRAY {
+    repeated EVOLUTIONCOIN items = 1;
+}
+/**
+* @file:   ./proto/heroprop.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message HEROPROP{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 国家 */
+    required int32 area = 2 [default = 0];
+    /** 人物属性 */
+    required int32 property = 3 [default = 0];
+    /** 职业 */
+    required int32 occupation = 4 [default = 0];
+    /** 生命 */
+    required int32 health = 5 [default = 0];
+    /** 生命成长 */
+    required string healthGrow = 6 [default = ""];
+    /** 攻击 */
+    required int32 damage = 7 [default = 0];
+    /** 攻击成长 */
+    required string damageGrow = 8 [default = ""];
+    /** 护甲 */
+    required int32 pdd = 9 [default = 0];
+    /** 护甲成长 */
+    required string pddGrow = 10 [default = ""];
+    /** 魔抗 */
+    required int32 mdd = 11 [default = 0];
+    /** 魔抗成长 */
+    required string mddGrow = 12 [default = ""];
+    /** 命中等级 */
+    required int32 hitLevel = 13 [default = 0];
+    /** 命中成长 */
+    required string hitGrow = 14 [default = ""];
+    /** 闪避等级 */
+    required int32 dodgeLevel = 15 [default = 0];
+    /** 闪避成长 */
+    required string dodgeGrow = 16 [default = ""];
+    /** 暴击等级 */
+    required int32 criLevel = 17 [default = 0];
+    /** 暴击成长 */
+    required string criGrow = 18 [default = ""];
+    /** 韧性等级 */
+    required int32 tenacityLevel = 19 [default = 0];
+    /** 韧性成长 */
+    required string tenacityGrow = 20 [default = ""];
+    /** 穿透 */
+    required int32 pddPierce = 21 [default = 0];
+    /** 穿透成长 */
+    required string pddPierceGrow = 22 [default = ""];
+    /** 普通攻击类型 */
+    required int32 type_Normal = 23 [default = 0];
+    /** 必杀攻击类型 */
+    required int32 type_Skill = 24 [default = 0];
+    /** 必杀增益百分比 */
+    required int32 percent_Skill = 25 [default = 0];
+    /** 必杀固定加成 */
+    required int32 addNum_Skill = 26 [default = 0];
+    /** 必杀固定加成成长 */
+    required int32 addNumGrow_Skill = 27 [default = 0];
+    /** 奥义攻击类型 */
+    required int32 type_AoYi = 28 [default = 0];
+    /** 奥义增益百分比 */
+    required int32 percent_AoYi = 29 [default = 0];
+    /** 奥义固定加成 */
+    required int32 addNum_AoYi = 30 [default = 0];
+    /** 奥义固定加成成长 */
+    required int32 addNumGrow_AoYi = 31 [default = 0];
+    /** 被动技能1 */
+    required string passiveSkill_1 = 32 [default = ""];
+    /** 被动技能2 */
+    required string passiveSkill_2 = 33 [default = ""];
+    /** 被动技能3 */
+    required string passiveSkill_3 = 34 [default = ""];
+    /** 普通攻击伤害范围 X */
+    required float range_X = 35 [default = 0];
+    /** 普通攻击伤害范围 Y */
+    required float range_Y = 36 [default = 0];
+    /** 普通攻击伤害范围 Z */
+    required float range_Z = 37 [default = 0];
+    /** 攻击速度（m/s） */
+    required float attackSpeed = 38 [default = 0];
+    /** 水平攻击距离（m） */
+    required float h_Dis = 39 [default = 0];
+    /** 垂直攻击距离（m） */
+    required float v_Dis = 40 [default = 0];
+    /** 移动速度(m/s) */
+    required float moveSpeed = 41 [default = 0];
+    /** 初始星级 */
+    required int32 star = 42 [default = 0];
+    /** 必杀阶段数 */
+    required int32 stage_B = 43 [default = 0];
+    /** 必杀每阶段对应hit数 */
+    required string hitNum_B = 44 [default = ""];
+    /** 奥义hit数 */
+    required int32 hitNum_A = 45 [default = 0];
+    /** 位置优先级 */
+    required int32 posNum = 46 [default = 0];
+    /** 每恢复一必杀点所需要的时间（秒/必杀点） */
+    required float recoverTime_Skill = 47 [default = 0];
+    /** 奥义需要的小球数量 */
+    required int32 aoYiNum = 48 [default = 0];
+    /** 武器 */
+    required string equip_Weapon = 49 [default = ""];
+    /** 项链 */
+    required string equip_Necklace = 50 [default = ""];
+    /** 衣服 */
+    required string equip_Clothes = 51 [default = ""];
+    /** 腰带 */
+    required string equip_Belt = 52 [default = ""];
+    /** 戒指 */
+    required string equip_Ring = 53 [default = ""];
+    /** 靴子 */
+    required string equip_Boot = 54 [default = ""];
+    /** 对应碎片id */
+    required string needId = 55 [default = ""];
+    /** 技能触发概率 */
+    required int32 skillTriggerProbability = 56 [default = 0];
+    /** 技能触发时间间隔 */
+    required float skillTriggerDuration = 57 [default = 0];
+}
+
+message HEROPROP_ARRAY {
+    repeated HEROPROP items = 1;
+}
+/**
+* @file:   ./proto/heroskill.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message HEROSKILL{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 伤害系数 */
+    required float factor = 2 [default = 0];
+    /** 击退距离 */
+    required float distance = 3 [default = 0];
+    /** 浮空高度 */
+    required float height = 4 [default = 0];
+    /** 伤害范围-X */
+    required float range_x = 5 [default = 0];
+    /** 伤害范围-Y */
+    required float range_y = 6 [default = 0];
+    /** 伤害范围-Z */
+    required float range_z = 7 [default = 0];
+    /** hit时间间隔 */
+    required float waitTime = 8 [default = 0];
+    /** 伤害强度 */
+    required int32 intensity = 9 [default = 0];
+}
+
+message HEROSKILL_ARRAY {
+    repeated HEROSKILL items = 1;
+}
+/**
+* @file:   ./proto/herostar.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message HEROSTAR{
+    /**  星数 */
+    required string id = 1 [default = ""];
+    /** 需要碎片 */
+    required int32 needNum = 2 [default = 0];
+}
+
+message HEROSTAR_ARRAY {
+    repeated HEROSTAR items = 1;
+}
+/**
+* @file:   ./proto/monsterprop.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message MONSTERPROP{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 国家 */
+    required int32 area = 2 [default = 0];
+    /** 职业 */
+    required int32 occupation = 3 [default = 0];
+    /** 等级 */
+    required int32 level = 4 [default = 0];
+    /** 生命 */
+    required int32 health = 5 [default = 0];
+    /** 攻击 */
+    required int32 damage = 6 [default = 0];
+    /** 护甲 */
+    required int32 pdd = 7 [default = 0];
+    /** 魔抗 */
+    required int32 mdd = 8 [default = 0];
+    /** 命中等级 */
+    required int32 hitLevel = 9 [default = 0];
+    /** 闪避等级 */
+    required int32 dodgeLevel = 10 [default = 0];
+    /** 暴击等级 */
+    required int32 criLevel = 11 [default = 0];
+    /** 韧性等级 */
+    required int32 tenacityLevel = 12 [default = 0];
+    /** 穿透 */
+    required int32 pddPierce = 13 [default = 0];
+    /** 普通攻击伤害范围 X */
+    required float range_X = 14 [default = 0];
+    /** 普通攻击伤害范围 Y */
+    required float range_Y = 15 [default = 0];
+    /** 普通攻击伤害范围 Z */
+    required float range_Z = 16 [default = 0];
+    /** 攻击速度（m/s） */
+    required float attackSpeed = 17 [default = 0];
+    /** 水平攻击距离（m） */
+    required float h_Dis = 18 [default = 0];
+    /** 垂直攻击距离（m） */
+    required float v_Dis = 19 [default = 0];
+    /** 移动速度(m/s) */
+    required float moveSpeed = 20 [default = 0];
+    /** 星级 */
+    required int32 star = 21 [default = 0];
+    /** 初始强度 */
+    required int32 maxIntensity = 22 [default = 0];
+    /** 每秒强度恢复（num/s） */
+    required int32 recoverIntensityRate = 23 [default = 0];
+    /** 硬直临界值（必杀可浮空和击退） */
+    required int32 minIntensity = 24 [default = 0];
+    /** 攻击类型 */
+    required int32 type_Normal = 25 [default = 0];
+    /** 被动技能 */
+    required string passiveSkillId = 26 [default = ""];
+    /** 被动技能等级 */
+    required string passiveSkillLevel = 27 [default = ""];
+}
+
+message MONSTERPROP_ARRAY {
+    repeated MONSTERPROP items = 1;
+}
+
+/**
+* @file:   ./proto/passive.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message PASSIVE{
+    /** 技能ID */
+    required string id = 1 [default = ""];
+    /** 触发条件 */
+    required int32 triggerEnum = 2 [default = 0];
+    /** 触发Id */
+    required string triggerId = 3 [default = ""];
+    /** buff的id */
+    required string buffId = 4 [default = ""];
+    /** 作用的目标阵营 */
+    required int32 target_Team = 5 [default = 0];
+    /** 作用的目标势力 */
+    required int32 target_State = 6 [default = 0];
+    /** 作用的目标职业 */
+    required int32 target_Occupation = 7 [default = 0];
+}
+
+message PASSIVE_ARRAY {
+    repeated PASSIVE items = 1;
+}
+/**
+* @file:   ./proto/prizeshow.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message PRIZESHOW{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 类型 */
+    required string type = 2 [default = ""];
+    /** 物品数量 */
+    required string counts = 3 [default = ""];
+    /** 物品ID */
+    required string awards = 4 [default = ""];
+}
+
+message PRIZESHOW_ARRAY {
+    repeated PRIZESHOW items = 1;
+}
+/**
+* @file:   ./proto/qualityrule.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message QUALITYRULE{
+    /** ID */
+    required string id = 1 [default = ""];
+    /** 等级要求 */
+    required int32 needLevel = 2 [default = 0];
+    /** 金币 */
+    required int32 needGolds = 3 [default = 0];
+    /** 增加生命 */
+    required int32 health = 4 [default = 0];
+    /** 增加攻击 */
+    required int32 damage = 5 [default = 0];
+    /** 增加护甲 */
+    required int32 pdd = 6 [default = 0];
+    /** 增加魔抗 */
+    required int32 mdd = 7 [default = 0];
+    /** 增加命中 */
+    required int32 hitLevel = 8 [default = 0];
+    /** 增加闪避 */
+    required int32 dodgeLevel = 9 [default = 0];
+    /** 增加暴击 */
+    required int32 criLevel = 10 [default = 0];
+    /** 增加韧性 */
+    required int32 tenacityLevel = 11 [default = 0];
+    /** 增加穿透 */
+    required int32 pddPierce = 12 [default = 0];
+    /** 开放功能 */
+    required int32 open = 13 [default = 0];
+}
+
+message QUALITYRULE_ARRAY {
+    repeated QUALITYRULE items = 1;
+}
+/**
+* @file:   ./proto/realtimecheck.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message REALTIMECHECK{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 基本型 */
+    required int32 type = 2 [default = 0];
+    /** 触发数值 */
+    required int32 num = 3 [default = 0];
+}
+
+message REALTIMECHECK_ARRAY {
+    repeated REALTIMECHECK items = 1;
+}
+/**
+* @file:   ./proto/resetprice.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message RESETPRICE{
+    /** 次数 */
+    required string id = 1 [default = ""];
+    /** 单次消耗钻石 */
+    required int32 needGems = 2 [default = 0];
+}
+
+message RESETPRICE_ARRAY {
+    repeated RESETPRICE items = 1;
+}
+/**
+* @file:   ./proto/rule.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message RULE{
+    /** 等级 */
+    required string id = 1 [default = ""];
+    /** 玩家升下级需要经验值 */
+    required int32 upgrade_Exp_User = 2 [default = 0];
+    /** 英雄升下级需要经验值 */
+    required int32 upgrade_Exp_Hero = 3 [default = 0];
+    /** 命中折算 */
+    required int32 factor_Hit = 4 [default = 0];
+    /** 闪避折算 */
+    required int32 factor_Dodge = 5 [default = 0];
+    /** 暴击折算 */
+    required int32 factor_Cri = 6 [default = 0];
+    /** 韧性折算 */
+    required int32 factor_Tenacity = 7 [default = 0];
+    /** 必杀升级金币 */
+    required int32 upgrade_Gold_Skill = 8 [default = 0];
+    /** 奥义升级金币 */
+    required int32 upgrade_Gold_AoYi = 9 [default = 0];
+    /** 被动1升级金币 */
+    required int32 upgrade_Gold_Passive_1 = 10 [default = 0];
+    /** 被动2升级金币 */
+    required int32 upgrade_Gold_Passive_2 = 11 [default = 0];
+    /** 被动3金币 */
+    required int32 upgrade_Gold_Passive_3 = 12 [default = 0];
+    /** 武器升级金币 */
+    required int32 upgrade_Gold_Weapon = 13 [default = 0];
+    /** 项链升级金币 */
+    required int32 upgrade_Gold_Necklace = 14 [default = 0];
+    /** 衣服升级金币 */
+    required int32 upgrade_Gold_Clothes = 15 [default = 0];
+    /** 腰带升级金币 */
+    required int32 upgrade_Gold_Belt = 16 [default = 0];
+    /** 戒指升级金币 */
+    required int32 upgrade_Gold_Ring = 17 [default = 0];
+    /** 靴子升级金币 */
+    required int32 upgrade_Gold_Boot = 18 [default = 0];
+}
+
+message RULE_ARRAY {
+    repeated RULE items = 1;
+}
+/**
+* @file:   ./proto/shopresetprice.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message SHOPRESETPRICE{
+    /** 次数 */
+    required string id = 1 [default = ""];
+    /** 单次消耗钻石 */
+    required int32 needGems = 2 [default = 0];
+}
+
+message SHOPRESETPRICE_ARRAY {
+    repeated SHOPRESETPRICE items = 1;
+}
+/**
+* @file:   ./proto/spprice.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message SPPRICE{
+    /** 次数 */
+    required string id = 1 [default = ""];
+    /** 单次消耗钻石 */
+    required int32 needGems = 2 [default = 0];
+}
+
+message SPPRICE_ARRAY {
+    repeated SPPRICE items = 1;
+}
+/**
+* @file:   ./proto/staprice.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message STAPRICE{
+    /** 次数 */
+    required string id = 1 [default = ""];
+    /** 单次消耗钻石 */
+    required int32 needGems = 2 [default = 0];
+}
+
+message STAPRICE_ARRAY {
+    repeated STAPRICE items = 1;
+}
+/**
+* @file:   ./proto/subtask.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message SUBTASK{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 战斗数据ID */
+    required string battleData = 2 [default = ""];
+    /** 对应的每场战斗难度系数 */
+    required string diffs = 3 [default = ""];
+    /** 对应的每场战斗时间限制（秒） */
+    required string totalTimes = 4 [default = ""];
+    /** 中文任务名称 */
+    required string name_ch = 5 [default = ""];
+    /** 消耗体力 */
+    required int32 expendSt = 6 [default = 0];
+    /** 总挑战次数 */
+    required int32 fightCount = 7 [default = 0];
+    /** 账号获得经验 */
+    required int32 idExp = 8 [default = 0];
+    /** 英雄获得经验 */
+    required int32 heroExp = 9 [default = 0];
+    /** 获得金币 */
+    required int32 dropGold = 10 [default = 0];
+    /** 所属系列任务 --> */
+    required string pointParentId = 11 [default = ""];
+    /** 优先级 */
+    required float priority = 12 [default = 0];
+    /** 参考战力 */
+    required int32 fightPower = 13 [default = 0];
+}
+
+message SUBTASK_ARRAY {
+    repeated SUBTASK items = 1;
+}
+/**
+* @file:   ./proto/task.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message TASK{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 类型 */
+    required int32 seriesType = 2 [default = 0];
+    /** 中文任务名 */
+    required string seriesName_ch = 3 [default = ""];
+    /** 奖励ID */
+    required string rewardId = 4 [default = ""];
+    /** 任务开放时间类型 */
+    required int32 openTimeType = 5 [default = 0];
+    /** 任务开放时间 */
+    required string openTime = 6 [default = ""];
+    /** 每日进入总次数 */
+    required int32 totalEnterNum = 7 [default = 0];
+    /** 限制条件 */
+    required string enterLimit = 8 [default = ""];
+    /** 所属城市 --> */
+    required string pointParentId = 9 [default = ""];
+    /** 完成后开启据点id */
+    required string nextPoint = 10 [default = ""];
+    /** 优先级 */
+    required float priority = 11 [default = 0];
+}
+
+message TASK_ARRAY {
+    repeated TASK items = 1;
+}
+/**
+* @file:   ./proto/triggerattack.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message TRIGGERATTACK{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 触发条件 */
+    required int32 type = 2 [default = 0];
+    /** 冷却CD */
+    required float cd = 3 [default = 0];
+}
+
+message TRIGGERATTACK_ARRAY {
+    repeated TRIGGERATTACK items = 1;
+}
+/**
+* @file:   ./proto/triggerstartcondition.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message TRIGGERSTARTCONDITION{
+    /** id */
+    required string id = 1 [default = ""];
+    /** 时机 */
+    required int32 trigger_Time = 2 [default = 0];
+    /** 阵营 */
+    required int32 trigger_Team = 3 [default = 0];
+    /** 势力 */
+    required int32 trigger_State = 4 [default = 0];
+    /** 职业 */
+    required int32 trigger_Occupation = 5 [default = 0];
+    /** 比较符号 */
+    required int32 trigger_Mark = 6 [default = 0];
+    /** 人数 */
+    required int32 trigger_Count = 7 [default = 0];
+}
+
+message TRIGGERSTARTCONDITION_ARRAY {
+    repeated TRIGGERSTARTCONDITION items = 1;
+}
+/**
+* @file:   ./proto/vip.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message VIP{
+    /** VIP */
+    required string id = 1 [default = ""];
+    /** 达到需要累计充值金额 */
+    required int32 needRMB = 2 [default = 0];
+    /** 送扫荡券数量 */
+    required int32 freeItemCount = 3 [default = 0];
+    /** 可购买体力次数 */
+    required int32 buyPowerCount = 4 [default = 0];
+    /** 重置自由任务副本次数 */
+    required int32 buyFBCount = 5 [default = 0];
+    /** 控制购买竞技场挑战次数 */
+    required int32 buyArenaCount = 6 [default = 0];
+    /** 控制可点金次数 */
+    required int32 buyGoldsCount = 7 [default = 0];
+    /** 技能点上限 */
+    required int32 maxSkillPoint = 8 [default = 0];
+    /** 每日经验活动副本次数 */
+    required int32 expBattleNum = 9 [default = 0];
+    /** 每日金币活动副本次数 */
+    required int32 goldBattleNum = 10 [default = 0];
+    /** 每日爬塔次数 */
+    required int32 towerNum = 11 [default = 0];
+    /** 每日远征次数 */
+    required int32 crusadeNum = 12 [default = 0];
+    /** 购买技能点次数上限 */
+    required int32 buySkillPoint = 13 [default = 0];
+}
+
+message VIP_ARRAY {
+    repeated VIP items = 1;
+}
+/**
+* @file:   ./proto/vipfunction.proto
+* @brief:  这个文件是通过工具自动生成的，建议不要手动修改
+*/
+
+
+message VIPFUNCTION{
+    /** 功能 */
+    required string id = 1 [default = ""];
+    /** 开启VIP */
+    required int32 openVip = 2 [default = 0];
+}
+
+message VIPFUNCTION_ARRAY {
+    repeated VIPFUNCTION items = 1;
+}
+
+
+
+//<<< common ------------------------------------------------------------------------------------------------------------------------------
+
+
+message c_gs_enter_gs_req{
+	required bytes token = 1;	//accountserver给予客户端和gs的令牌
+};
+
+message gs_c_enter_gs_res{
+	required uint32 error_code = 1;	//错误码
+	//optional e_gsc_proto_version proto_version = 2;//协议版本
+	optional uint32 proto_version = 2;//协议版本
+	optional uint32 server_timestamp = 3;//服务器时间戳
+};
+
+message c_gs_leave_gs_req{
+};
+
+message gs_c_leave_gs_res{
+	required uint32 error_code = 1;	//错误码
+};
+
+
+
+//客户端json配置文件的版本信息
+message c_gs_json_config_version_req{
+};
+
+message gs_c_json_config_version_res{
+	message config_version{
+		required string name = 1; //配置表对应sheet的名字 
+		required string md5 = 2; //sheet文件的md5值
+	};
+
+	required uint32 error_code = 1;	//错误码
+	repeated config_version versions = 2;
+};
+
+//客户端json配置文件的拉取
+message c_gs_json_config_req{
+	repeated string names = 1;//需要下载的json配置文件的名字， 如果此处为空 则全部下载全部配置
+};
+
+message gs_c_json_config_res{
+	message config{
+		required string name = 1; //配置表对应sheet的名字 
+		required string md5 = 2; //sheet文件的md5值
+		required string content = 3;//内容
+	};
+
+	required uint32 error_code = 1;	//错误码
+	repeated config configs = 2;//配置信息
+};
+
+//以pb的class结构格式的信息 空间消耗比较小
+message c_gs_config_req{
+};
+
+message gs_c_config_res{
+	required uint32 error_code = 1;	//错误码
+
+	optional CHAPTERMAP_ARRAY chapter_map = 2;	//剧情副本数据表.xls	章节地图_CHAPTERMAP
+	optional TASK_ARRAY task = 3;			//剧情副本数据表.xls	系列任务_TASK
+	optional SUBTASK_ARRAY sub_task = 4;		//剧情副本数据表.xls	子任务_SUBTASK
+	optional BATTLE_ARRAY battle = 5;		//剧情副本数据表.xls	战斗数据表_BATTLE
+
+	optional HEROPROP_ARRAY hero_prop = 6 ;		//英雄怪物配置表.xls 英雄_HEROPROP
+	optional BOSSPROP_ARRAY boss_prop = 7 ;		//英雄怪物配置表.xls 头目_BOSSPROP
+	optional MONSTERPROP_ARRAY monster_prop = 8 ;	//英雄怪物配置表.xls 小怪_MONSTERPROP
+	
+	optional EQUIP_ARRAY equip= 9 ;		//英雄装备表.xls 英雄装备_EQUIP
+
+	optional AOYI_ARRAY aoyi = 10 ;		//奥义数值表.xls 奥义_AOYI  服务器不填充 不由服务器控制 这部分配置比较重要和难调 配置跟着客户端作版本更新
+
+	optional BAG_ARRAY bag = 11 ;		//背包及碎片物品表.xls 背包_BAG
+	
+	optional PASSIVE_ARRAY passive = 12 ;		//被动技能表.xls 被动技能_PASSIVE
+	optional TRIGGERSTARTCONDITION_ARRAY  trigger_start_condition = 13;		//被动技能表.xls  被动技能_TRIGGERSTARTCONDITION
+	optional REALTIMECHECK_ARRAY  realtime_check = 14;			//被动技能表.xls 被动技能_REALTIMECHECK
+	optional TRIGGERATTACK_ARRAY trigger_attack = 15;			//被动技能表.xls 被动技能_TRIGGERATTACK
+	optional BUFF_ARRAY  buff = 16;						//被动技能表.xls 被动技能_BUFF
+
+	optional HEROSKILL_ARRAY hero_skill = 17 ;		//必杀数值表.xls 英雄必杀_HEROSKILL   服务器不填充 不由服务器控制 这部分配置比较重要和难调 配置跟着客户端作版本更新
+	optional BOSSSKILL_ARRAY boss_skill = 18 ;		//必杀数值表.xls 头目_BOSSSKILL	  服务器不填充 不由服务器控制 这部分配置比较重要和难调 配置跟着客户端作版本更新
+
+	optional COINPRICE_ARRAY coin_price = 19;		//vip等级表.xls  点金价格表_COINPRICE
+	optional RESETPRICE_ARRAY reset_price = 20;		//vip等级表.xls 自由任务重置次数价格表_RESETPRICE
+	optional SPPRICE_ARRAY spprice = 21;			//vip等级表.xls 技能点购买价格表_SPPRICE
+	optional STAPRICE_ARRAY staprice = 22;			//vip等级表.xls 体力购买价格表_STAPRICE
+	optional VIP_ARRAY vip = 23;				//vip等级表.xls VIP数据表_VIP
+	optional VIPFUNCTION_ARRAY vip_function = 24;		//vip等级表.xls VIP功能解锁_VIPFUNCTION
+	optional SHOPRESETPRICE_ARRAY shop_resetprice = 25; //VIP等级表.xls 商店刷新_SHOPRESETPRICE
+	optional PRIZESHOW_ARRAY prize_show = 26;		 //奖励显示列表.xls 奖励显示列表_PRIZESHOW
+	optional HEROSTAR_ARRAY hero_star = 27;			
+	optional EVOLUTIONCOIN_ARRAY evolution_coin = 28;
+	optional QUALITYRULE_ARRAY quality_rule = 29;
+	optional RULE_ARRAY rule = 30;
+};
+
+message c_gs_user_info_req{};
+
+//这里不重用dbs gs的类似的结构是不希望两者互相影响  隔离开
+message user_sub_task{
+	required uint32 sub_task_id = 1;		//子任务id
+	required uint32 star = 2;			//完成星级
+	required uint32 last_enter_time = 3;		//上一次进入时间
+	required uint32 last_day_enter_num = 4;		//上一次进入时间的当天 已经进入的次数
+	required uint32 total_enter_num = 5;		//总共的完成次数
+	required uint32 last_reset_time = 6 ;		//上一次挑战次数重置时间
+	required uint32 last_day_reset_num = 7 ;	//上一日已经重置的次数
+};
+
+message user_sub_task_array{
+	repeated user_sub_task items = 1;
+};
+
+
+message user_hero_equip{
+	/** 英雄id */
+	required uint32 equip_id = 1 [default = 0];
+	required uint32 level = 2 [default = 0];
+	//required uint32 quality = 3 [default = 0]; //不需要 和id绑定了！
+};
+
+message user_hero_skill{
+	enum e_skill_type{
+		BISHA = 1;	//必杀
+		AOYI = 2 ;	//奥义
+		PASSIVE1 = 3;	//被动技能
+		PASSIVE2 = 4;	//被动技能
+		PASSIVE3 = 5;	//被动技能
+	};
+
+	required e_skill_type type = 1;
+
+	//去掉这个字段 按照枚举来 必杀 奥义 被动1 2 3  英雄的各个技能技能id 客户端也有配置
+	//required uint32 skill_id = 2 [default = 0];	//类型为必杀和奥义的时候 这里填0即可  为被动时 填被动的技能ID
+	
+	required uint32 level = 2 [default = 0];	//技能等级 为0时表示未开启
+};
+
+message user_hero{
+    /** 英雄id */
+    required uint32 hero_id = 1 [default = 0];
+    /** 星级 */
+    required uint32 star = 2 [default = 0];
+    /** 品质 */
+    required uint32 quality = 3 [default = 0];
+    /** 等级 */
+    required uint32 level = 4 [default = 0];
+    /** 当前经验 */
+    required uint32 cur_exp = 5 [default = 0];
+    /*获取时间*/
+    required uint32 got_timestamp = 6 [default = 0];
+    /** 装备 */
+    repeated user_hero_equip equips = 7 ;
+    /** 技能 */
+    repeated user_hero_skill skills = 8 ;	
+};
+
+message user_hero_array{
+	repeated user_hero items = 1;
+};
+
+message user_base_info{
+	required uint32 user_id = 1;
+	required string name = 2;
+	required uint32 level = 3;
+	required uint32 exp = 4;
+	required uint32 vip = 5;
+	required uint32 diamond = 6;
+	required uint32 gold = 7;
+	required uint32 health_cur = 8;		//体力值
+	required uint32 health_last_update_timestamp = 9;//上一次技体力更新时间
+	required uint32 skill_point = 10;	//技能点
+	required uint32 skill_point_last_update_timestamp = 11;		//上一次技能点更新时间
+	required uint32 invoke_gold_free_left_num = 12;			//上一次金币免费召唤当天剩余使用次数
+	required uint32 invoke_gold_free_update_timestamp = 13;		//上一次金币免费召唤功能使用的时间，只要剩余次数还有 并且这个时间距离现在超过了cd时间 客户端和服务器就判定可以使用这个功能
+	required uint32 invoke_diamond_free_left_num = 14;		//上一次钻石免费召唤当天剩余使用次数
+	required uint32 invoke_diamond_free_update_timestamp = 15;	//上一次钻石免费召唤 计算cd刷新的时间 ： 初始化的时候和满到不满的这个时间
+	required uint32 buy_used_times_gold = 16;	//金币购买已使用次数
+	required uint32 buy_used_times_health = 17;	//体力购买已使用次数
+	required uint32 buy_used_times_skill_point = 18;	//技能点购买已使用次数
+	required uint32 head_id = 19;			//头像
+	required uint32 head_frame_id = 20;		//头像框id
+	required uint32 friend_point = 21;		//友情点
+	required string signature = 22;
+	required uint32 fight_power = 23;		//战斗力
+	required uint32 crusade_point = 24;		//远征币
+};
+
+
+//游戏内元素
+message struct_game_element{
+	enum EELEMENTTYPE{
+		EELEMENTTYPE_min = 0;
+		EELEMENTTYPE_SKILL = 1;		//技能
+		EELEMENTTYPE_TASK = 2;		//父任务
+		EELEMENTTYPE_SUB_TASK = 3;	//子任务
+		EELEMENTTYPE_BATTLE = 4;	//战斗
+		EELEMENTTYPE_HERO = 5;		//英雄
+		EELEMENTTYPE_BOSS = 6;		//boss
+		EELEMENTTYPE_MONSTER = 7;	//怪物
+		EELEMENTTYPE_ITEM = 8;		//道具 /产出如果是碎片 sub_id = 0表示直接抽到的碎片 如果 sub=1表示抽到了已有的英雄而转化而来的碎片！
+		//EELEMENTTYPE_FRAGMENT = 9;	//碎片 合并到ITEM中
+		EELEMENTTYPE_EQUIP = 10;	//装备
+		EELEMENTTYPE_EXP = 11;		//经验   id=1 玩家 id=2英雄
+		EELEMENTTYPE_GOLD = 12;		//金币
+		EELEMENTTYPE_DIAMOND = 13;	//钻石
+		EELEMENTTYPE_HEALTH = 14;	//体力 sub_id表示  当 满体力值（自动回复可达的最大值）到非满体力时给客户端发的时间戳 才用来重置体力恢复定时器
+		EELEMENTTYPE_SKILL_POINT = 15;	//技能点点数  sub_id表示 且从满到不满状态时 ： 设置 sub_id为last_update_time 否则设置sub_id为0
+		EELEMENTTYPE_ARENA_POINT = 16;	//竞技场点数
+		EELEMENTTYPE_PACKET = 17;	//产出爆落包
+		EELEMENTTYPE_INVOKE_GOLD_FREE = 18;	//免费金币单次召唤  sub_id表示  当 从满值（自动回复可达的最大值）到非满值时给客户端发的时间戳 才用来重置定时器
+		EELEMENTTYPE_INVOKE_DIAMOND_FREE = 19;	//免费钻石单次召唤  sub_id表示  当 从满值（自动回复可达的最大值）到非满值时给客户端发的时间戳 才用来重置定时器
+		EELEMENTTYPE_PLAYER_LEVEL = 20;	//玩家等级
+		EELEMENTTYPE_PLAYER_EXP = 21;	//玩家经验值  sub_id表示增量！暂时type只支持Total 和EELEMENTTYPE_EXP的区别是 EELEMENTTYPE_EXP表示会产出的东西 而EELEMENTTYPE_PLAYER_EXP 针对对象是玩家身上的经验槽
+		EELEMENTTYPE_HERO_LEVEL = 22;	//英雄等级 此时id表示hero_id  （sub_id可以表示等级增量）
+		EELEMENTTYPE_HERO_EXP = 23;	//英雄经验值 此时id表示hero_id sub_id表示增量！暂时type只支持Total  和EELEMENTTYPE_EXP的区别是 EELEMENTTYPE_EXP表示会产出的东西 而 EELEMENTTYPE_HERO_EXP 针对对象是英雄身上的经验槽 
+		EELEMENTTYPE_SUB_TASK_ENTER_NUM = 24;	//副本已挑战次数 此时id表示sub_task_id
+		EELEMENTTYPE_SUB_TASK_RESET_NUM = 25;	//副本已重置次数 此时id表示sub_task_id
+		EELEMENTTYPE_FRIEND_POINT = 26;		//友情点
+		
+		EELEMENTTYPE_GUILD_CONTRIBUTION_POINT = 27;			//公会累积活跃度
+		//EELEMENTTYPE_GUILD_WEEK_CONTRIBUTION_POINT = 28;		//公会周活跃度
+		EELEMENTTYPE_GUILD_COIN = 29;					//公会代币
+		EELEMENTTYPE_GUILD_MEMBER_CONTRIBUTION_POINT = 30;		//公会成员贡献度
+		EELEMENTTYPE_GUILD_MEMBER_COIN = 31;				//公会成员代币
+		EELEMENTTYPE_CRUSADE_POINT = 32;	//远征币
+		EELEMENTTYPE_max = 33;
+	};
+
+	enum EELEMENT_NUM_TYPE{
+		min = 0	;	 
+		INCREASE = 1;	//增量
+		DECREASE = 2;	//减量
+		TOTAL	= 3;	//全量
+		max = 4	;	
+	};
+	
+	required EELEMENTTYPE type = 1 ;		//元素类型
+	required uint32	id = 2 ;			//id
+	optional uint32 sub_id = 3;			//子id (可选)
+	required EELEMENT_NUM_TYPE num_type = 4 ;	//数量类型
+	required uint32 num = 5 ;			//数量
+};
+
+message user_shop_item{
+
+	enum ESHOPITEMFLAG{
+		NONE = 0;	//不显示
+		HOT = 1;	//热卖
+		DISCOUNT = 2;	//打折
+		FLASHSALE = 3;	//限时抢购
+		MAX = 4;
+	};
+
+	//required uint32 user_id = 1;
+	//required uint32 shop_type = 1;
+	required uint32 pos = 1;	//商品位置 从0开始
+	required struct_game_element.EELEMENTTYPE element_type = 2;	//商品元素类型
+	required uint32 element_id = 3;		//商品元素id
+	required uint32 element_num = 4;	//商品元素数目
+	required struct_game_element.EELEMENTTYPE consume_type = 5;	//购买消耗元素类型
+	required uint32 consume_id = 6;		//购买消耗元素id
+	required uint32 consume_num = 7;	//购买消耗元素数量
+	required ESHOPITEMFLAG flag = 8;	//商品标识
+	required bool is_sold = 9;		//是够已售出 0未出售 1已出售
+};
+
+message user_shop{
+	enum ESHOPTYPE{
+		min = 0 ;
+		COMMON = 1 ;		//普通商店 杂货店
+		QIWUGE = 2 ;		//奇物阁
+		YIJIEBAOKU = 3 ;	//异界宝库
+		ARENA = 4 ;		//竞技场商店
+		EXPEDITION = 5 ;	//远征商店
+		max = 6 ;
+	};
+
+	required ESHOPTYPE shop_type = 1;
+	required uint32 last_auto_refresh_time = 2;		//上一次自动刷新商店时间 通过这个倒计时下一次的时间
+	required uint32 last_manual_refresh_time = 3;		//上一次的手动刷新时间
+	required uint32 last_day_manual_refresh_num = 4;	//最后一日 当天已经手动刷新了商店多少次
+	required uint32 random_open_start_timestamp = 5;	//不满足vip和运营开放时，随机开启商店时 商店开放的起始时间
+	required uint32 random_open_end_timestamp = 6;		//不满足vip和运营开放时，随机开启商店时 商店开放的结束时间
+	repeated user_shop_item items = 7;			//商店道具
+};
+
+//竞技场挑战记录
+message user_arena_log{
+	required bool is_attacker_win = 1;//挑战方是否获胜
+	required uint32 time = 2;//挑战发起时间
+
+	//我的信息
+	required bool is_me_attacker = 3;// 我是否是挑战发起者
+	required uint32 me_rank = 4;//我的排名
+	
+	//显示对手信息
+	required uint32 match_user_id = 5;
+	required uint32 match_rank = 6;
+	required uint32 match_power = 7;
+	required string match_name = 8;
+	required uint32 match_level = 9;
+	message user_arena_log_hero{
+		required uint32 hero_id = 1;//id
+		required uint32 quality = 2;//品质
+		required uint32 level = 3;//等级
+		required uint32 star = 4;//星级
+	};
+	repeated user_arena_log_hero match_heros = 10;//对手的出阵英雄信息};
+};
+
+//竞技场参赛玩家
+message user_arena_contestant{
+	required uint32 rank = 1;	//排名
+	required uint32 user_id = 2;//用户id
+	required string name = 3;//名字
+	required uint32 level = 4;//等级
+	required uint32 head_id = 5;	//头像id
+	required uint32 head_frame_id = 6;	//头像边框id
+	repeated user_hero heros = 7;//出战英雄
+};
+
+//玩家自己的竞技场信息
+message user_arena{
+	required uint32 rank = 1;//排名
+	required uint32 score = 2;//竞技场积分
+	required uint32 last_challenge_time = 3;//上一次的挑战时间
+	required uint32 last_day_challenge_num = 4;//last_challenge_time当天已经挑战的次数
+	required uint32 history_highest_rank = 5;//历史最高排名
+	repeated uint32 heros = 6;//出场英雄id
+	required uint32 last_time_buy_arena_challenge = 7;	//上次购买挑战次数的时间
+	required uint32 last_day_buy_arena_challenge_num = 8;	//上次当日购买挑战次数的次数，上限在sys_vip表
+	repeated user_arena_log	log = 9;//竞技场日志 最多十条
+	repeated user_arena_contestant matchs = 10;//对手 会刷新
+};
+
+message user_crusade{
+	message crusade_hero{
+		required uint32 hero_id = 1;
+		required uint32 hp = 2;
+		required uint32 ao_yi = 3;
+		required uint32 bi_sha = 4;
+	}
+	required bool is_all_through = 1;		//是否通关
+	repeated crusade_hero me_heros = 2;		//远征参战英雄(没参战的就不用发)
+	repeated crusade_hero enemy_heros = 3;		//敌人信息
+	optional uint32 wave = 4;			//当前波数
+	optional uint32 left_reset_times = 5;		//剩余重置数目
+	optional uint32 left_promote_award_times = 6;	//提升奖励剩余次数
+}
+
+message gs_c_user_info_res{
+	required uint32 error_code = 1;
+	optional user_base_info base_info = 2;			//玩家基本信息
+	optional user_sub_task_array sub_tasks = 3;		//任务信息
+	optional user_hero_array heros = 4;			//英雄信息
+	repeated struct_game_element item_elements   = 5;	//道具信息
+	repeated user_mail mail_elements  = 6;			//邮件信息
+	repeated user_shop shops = 7;				//商店信息
+	repeated user_mission missions = 8;			//任务信息
+	optional user_arena arena = 9;//竞技场信息
+	optional user_sign sign = 10;				//签到信息
+	repeated uint32 guide_ids = 11;				//完成的新手引导id
+	optional user_friend friend_info = 12;			//好友信息
+	optional user_crusade crusade = 13;			//远征
+};
+
+//开始一个子任务
+message c_gs_start_sub_task_req{
+	required uint32 sub_task_id = 1;
+	repeated uint32 heros = 2;	//参战的英雄们的hero_id数组 最后给予英雄经验值的也是这些英雄
+};
+
+message gs_c_start_sub_task_res{
+	required uint32 error_code = 1;
+	optional uint32 sub_task_id = 2;	//子任务id 服务器需要保存战斗信息任务结束，结束时需要这个知道是哪个任务。 异步环境下的客户端也能据此字段方便知道是哪个任务，而不额外存储
+	repeated struct_game_element output = 3;//产出 只作显示用 并没有在这个时候就给予 在胜利之后才给予玩家
+	repeated struct_game_element consume = 4;	//消耗  体力消耗也在里面 health的sub_id里表示  当 满体力值（自动回复可达的最大值）到非满体力时给客户端发的时间戳 才用来重置体力恢复定时器
+	optional uint32 enter_time = 5;		//进入时间戳 秒为单位 客户端根据此来更新最后进入时间 以作时间进入限制 end之后服务器也会据此更细玩家信息！
+};
+
+//结束一个子任务
+message c_gs_end_sub_task_req{
+	required bool is_win = 1;	//是否获胜
+	optional uint32 star = 2;	//获胜时填写星级 结束副本请求中添加星级字段，服务器不计算而由客户端来发 服务器保存最佳星级数据 后面副本扫荡的时候需要3星级才能使用
+};
+
+message gs_c_end_sub_task_res{
+	required uint32 error_code = 1;
+	repeated struct_game_element output = 2;		//产出(胜利时消耗的体力也在这里) 如果爆落了道具且背包已满则放到了gs_c_mail_ntf_array邮件协议里面发出给客户端
+	repeated struct_game_element task_complete_prize = 3;	//所属父任务 全部子任务都完成时 得到的奖励！
+	repeated user_hero heros = 4;				//产出的英雄
+	//若玩家奇物阁的当前状态为：未解锁，则玩家每次成功通过一次主线任务（包括扫荡，十连扫荡计算十次概率）均有概率开启奇物阁
+	//若玩家异界宝库的当前状态为：未解锁，未开启玩家每次成功通过一次支线任务（包括扫荡，三连扫荡则计算三次概率）均有概率开启异界宝库
+	optional user_shop shop = 5;
+};
+
+message c_gs_invoke_hero_req{
+	enum EINVOKE_TYPE{
+		FREE = 1;	//免费召唤
+		GOLD = 2;	//金币召唤
+		DIAMOND = 3;	//钻石召唤
+		FRAGMENT = 4;	//碎片召唤
+	};
+
+	required EINVOKE_TYPE invoke_type = 1 ;	// 召唤类型
+	optional uint32 hero_num = 2;		// 非FRAGMENT召唤时有效： 召唤英雄个数  非碎片召唤时需要设置
+	optional uint32 item_id = 3;		// FRAGMENT召唤时有效： 碎片的物品id 这个填了hero_id可不填
+	optional uint32 hero_id = 4;		// FRAGMENT召唤时有效：	英雄的id 这个填了item_id可不填
+};
+
+message gs_c_invoke_hero_res{
+	required uint32 error_code = 1;			
+	//optional user_hero_array heros = 2;		//召唤到的英雄
+	repeated user_hero heros = 2;			//召唤到的英雄
+	repeated struct_game_element consume = 3;	//消耗
+	repeated struct_game_element output = 4;	//其他产出
+};
+
+//英雄装备升级
+message c_gs_equip_level_up_req{
+	enum OP_TYPE{
+		EQUIP1_LEVEL = 1;	//所选的一件装备升level_up_num级 
+		EQUIP1_LEVELN = 2;	//所选的一件装备升到能升的最大级（具体升多少级 受玩家等级和金钱制约）
+		EQUIPN_LEVELN = 3;	//此英雄所有装备升到能升的最大级（具体升多少级 受玩家等级和金钱制约）
+	}
+	required OP_TYPE op_type = 1;		//升级方式
+	required uint32 hero_id = 2;		//英雄id
+	optional uint32 equip_id = 3;		//装备id 升级单件装备时有效
+	optional uint32 level_up_num = 4;	//op_type == EQUIP1_LEVEL 操作时才需要设置 升级单件装备指定需要升多少级
+};
+
+message gs_c_equip_level_up_res{
+	required uint32 error_code = 1;
+	optional uint32 hero_id = 2;			//为了让客户端知道 他刚刚操作的是哪个英雄
+	repeated user_hero_equip equips = 3;		//更新了的装备信息
+	repeated struct_game_element consume = 4;	//消耗
+};
+
+//英雄装备进化
+message c_gs_equip_evolution_req{
+	required uint32 hero_id = 1;	//英雄id
+	required uint32 equip_id = 2;	//装备id
+};
+
+message gs_c_equip_evolution_res{
+	required uint32 error_code = 1;
+	optional uint32 hero_id = 2;			//为了让客户端知道 他刚刚操作的是哪个英雄
+	optional uint32 equip_id = 3;			//为了让客户端知道 他刚刚操作的是哪个装备
+	optional uint32 evolution_equip_id = 4;		//进化后的装备id
+	repeated struct_game_element consume = 5;	//消耗品
+};
+
+
+//英雄突破
+message c_gs_hero_evolution_req{
+	required uint32 hero_id = 1;	//英雄id
+};
+
+message gs_c_hero_evolution_res{
+	required uint32 error_code = 1;
+	optional uint32 hero_id = 2;			//为了让客户端知道 他刚刚操作的是哪个英雄
+	repeated struct_game_element consume = 3;	//消耗品
+	repeated user_hero_skill new_skills = 4 ;	//升品质时 新开放的技能
+};
+
+//英雄升星
+message c_gs_hero_star_up_req{
+	required uint32 hero_id = 1;	//英雄id
+};
+
+message gs_c_hero_star_up_res{
+	required uint32 error_code = 1;
+	optional uint32 hero_id = 2;			//为了让客户端知道 他刚刚操作的是哪个英雄
+	repeated struct_game_element consume = 3;	//消耗品
+};
+
+//英雄技能升级
+message c_gs_skill_level_up_req{
+	required uint32 hero_id = 1;	//英雄id
+	required user_hero_skill.e_skill_type skill_type = 2;	//技能类型
+	required uint32 level = 3;	//升级数	比如要升2级就填2
+};
+
+message gs_c_skill_level_up_res{
+	required uint32 error_code = 1;
+	optional uint32 hero_id = 2;			//为了让客户端知道 刚刚操作的是哪个英雄
+	optional user_hero_skill.e_skill_type skill_type = 3;			//为了让客户端知道 刚刚操作的是哪个技能
+	optional uint32 level = 4;			//为了让客户端知道 升了多少级
+	repeated struct_game_element consume = 5;	//消耗品   枚举类型为 skillpoint时 且从满到不满状态时 ： 设置 sub_id为last_update_time 否则设置sub_id为0
+};
+
+//祭坛召唤
+message c_gs_invoke_req{
+	enum EINVOKE_TYPE{
+		GOLD_FREE = 1;	//金币免费单次召唤	是否需要？！ 或者服务器直接判断是否免费的
+		GOLD_1 = 2;	//金币单次召唤
+		GOLD_N = 3;	//金币连续召唤
+		DIAMOND_FREE = 4;	//钻石免费单次召唤
+		DIAMOND_1 = 5;	//钻石单次召唤
+		DIAMOND_N = 6;	//钻石连续召唤
+		VIP_DIAMOND_1 = 7;	//VIP钻石单次召唤
+		VIP_DIAMOND_N = 8;	//VIP钻石连续召唤
+		FRIEND_POINT = 9;	//友情点抽奖
+	};
+
+	required EINVOKE_TYPE invoke_type = 1 ;	// 召唤类型
+	optional uint32 invoke_num = 2;		//召唤次数 仅限友情点抽奖的时候使用
+};
+
+message gs_c_invoke_res{
+	required uint32 error_code = 1;			
+	repeated struct_game_element consume = 2;	//消耗 如果类型是EELEMENTTYPE_INVOKE_GOLD_FREE或者EELEMENTTYPE_INVOKE_DIAMOND_FREE 则sub_id表示  当 从满值（自动回复可达的最大值）到非满值时给客户端发的时间戳 才用来重置定时器
+	repeated struct_game_element ouput = 3;		//产出 如果得到了碎片的时候 sub_id = 0表示直接抽到的碎片 如果 sub=1表示抽到了已有的英雄而转化而来的碎片！
+	//optional user_hero_array heros = 4;		//召唤到的英雄
+	repeated user_hero heros = 4;			//召唤到的英雄
+};
+
+/*
+message struct_task{
+	required uint32
+};
+*/
+
+/*
+//获取活动副本
+message c_gs_get_activity_task_req{
+};
+
+message gs_c_get_activity_task_res{
+	required uint32 error_code = 1;	
+	repeated uint32 tasks = 2;	//可显示的活动任务id数组
+};
+*/
+
+message struct_game_element_array{
+	repeated struct_game_element items = 1;
+};
+
+//钻石扫荡
+message c_gs_diamond_speed_kill_req{
+	required uint32 num = 1;	//使用的钻石数量
+	required uint32 sub_task_id = 2;//扫荡的副本id
+}
+
+message gs_c_diamond_speed_kill_res{
+	required uint32 error_code = 1;
+	repeated struct_game_element consume = 2;		//消耗
+	repeated struct_game_element_array items_arr = 3;	//多波产出 元素数组的数组
+
+	//若玩家奇物阁的当前状态为：未解锁，则玩家每次成功通过一次主线任务（包括扫荡，十连扫荡计算十次概率）均有概率开启奇物阁
+	//若玩家异界宝库的当前状态为：未解锁，未开启玩家每次成功通过一次支线任务（包括扫荡，三连扫荡则计算三次概率）均有概率开启异界宝库
+	optional user_shop shop = 5;
+}
+
+message c_gs_use_item_req{
+	required uint32 item_id = 1;	//使用物品的元素id
+	required uint32 num = 2;	//使用数量
+	optional uint32 target_id = 3;	//针对的目标 任务id  英雄id等等
+};
+
+message gs_c_use_item_res{
+	required uint32 error_code = 1;
+	repeated struct_game_element consume = 2;		//消耗
+	repeated struct_game_element_array items_arr = 3;	//多波产出 元素数组的数组
+
+	//如果使用扫荡券
+	//若玩家奇物阁的当前状态为：未解锁，则玩家每次成功通过一次主线任务（包括扫荡，十连扫荡计算十次概率）均有概率开启奇物阁
+	//若玩家异界宝库的当前状态为：未解锁，未开启玩家每次成功通过一次支线任务（包括扫荡，三连扫荡则计算三次概率）均有概率开启异界宝库
+	optional user_shop shop = 5;
+};
+
+//获取商店信息
+message c_gs_shop_info_req{
+	enum PULLTYPE{
+		ONE = 1;
+		ALL = 2;
+	};
+
+	required PULLTYPE pull_type = 1;
+	optional user_shop.ESHOPTYPE shop_type = 2; //PULLTYPE == ONE 时 有效 表示要拉的商店类别
+};
+
+message gs_c_shop_info_res{
+	required uint32 error_code = 1;
+	repeated user_shop shops = 2;//当前不能使用的商店 不出现在这里  受全局开关 运营活动 vip等级  随机商店限时 等影响
+};
+
+//商店购买
+message c_gs_shop_buy_item_req{
+	required user_shop.ESHOPTYPE shop_type = 1;	//商店类型
+	required uint32 pos = 2;		//商品位置 从0开始
+};
+
+message gs_c_shop_buy_item_res{
+	required uint32 error_code = 1;// 成功或者失败 失败有一个可能是商店信息过期
+	
+	//商店过期失败时 返回刷新的商店信息：
+	optional user_shop refreshed_shop = 2;		//假如购买操作的时候 商店信息是过时的 则购买失败 并返回更新过了的商店信息
+	
+	//购买成功时的信息：  客户端根据这个来设置该物品已售，灰掉
+	optional user_shop.ESHOPTYPE shop_type = 3;	//商店类型
+	optional uint32 pos = 4;			//商品位置
+	repeated struct_game_element output = 5;	//购买成功时的获得
+	repeated struct_game_element consume = 6;	//购买成功时的消耗
+};
+
+//手动刷新商店请求
+message c_gs_shop_refresh_req{
+	required user_shop.ESHOPTYPE shop_type = 1;	//商店类型
+};
+
+message gs_c_shop_refresh_res{
+	required uint32 error_code = 1;
+	optional user_shop shop = 2;
+	repeated struct_game_element consume = 3;	//刷新消耗
+};
+
+//售卖
+message c_gs_sell_req{
+	repeated struct_game_element items = 1;	//售卖物品
+};
+
+message gs_c_sell_res{
+	required uint32	error_code = 1;	
+	repeated struct_game_element eles = 2;	//获得的物品和出售的物品
+};
+
+
+//竞技场刷新对手
+message c_gs_arena_refresh_match_req{
+};
+
+message gs_c_arena_refresh_match_res{
+	required uint32	error_code = 1;	
+	repeated user_arena_contestant matchs = 2;//对手
+};
+
+//更新出战队伍信息
+message c_gs_arena_update_team_req{
+	repeated uint32 heros = 1;
+};
+
+message gs_c_arena_update_team_res{
+	required uint32	error_code = 1;
+};
+
+//竞技场挑战
+message c_gs_arena_start_challenge_req{
+	//required uint32 rank = 1;		//我的当前排名 可以补给 即使自己的排名已经变了 也允许挑战
+	repeated uint32 heros = 1;		//挑战者出场英雄 新创建玩家竞技场信息时 这些作为防守英雄！
+	required uint32 defender_user_id = 2;	//防守者user_id 服务器验证是否这个玩家的排名 比自己的低 （不管是否已经改变，只要还比自己高就可以打）否则返回新的玩家排名
+	//required uint32 defender_rank = 3;	//防守者排名
+	required uint32 power = 3;		//挑战者此次挑战的战斗力 为了记log
+	required uint32 defender_power = 4;	//防守者战斗力 为了记log
+};
+
+message gs_c_arena_start_challenge_res{
+	//需要关注的是这几个情况  
+	//error_code == e_gsc_errorcode_success 时：挑战操作执行ok  此时客户端本地要减少竞技场可挑战次数
+	//error_code == e_gsc_errorcode_arena_contestant_rank_changed 时：被挑战者的排名已经改变而挑战失败
+	required uint32	error_code = 1;
+	optional uint32 last_challenge_time = 2;		//上一次的挑战时间
+	optional uint32 last_day_challenge_num = 3;		//last_challenge_time当天已经挑战的次数
+	//>>> error_code == e_gsc_errorcode_success 时填充	
+	//>>>赢的时候 或者判断被挑战者的排名已经改变而挑战失败时  这里会填充数据
+	repeated user_arena_contestant matchs = 4;//新的对手
+};
+
+message c_gs_arena_end_challenge_req{
+	required bool is_win = 1;
+	//双方战斗力不在这里传 而在start处传 是因为玩家可能会异常退出 所以挑战开始时发送
+};
+
+message gs_c_arena_end_challenge_res{
+	required uint32	error_code = 1;
+	//>>> is_win == true的时候填充
+	optional uint32 rank = 2;			//赢了之后的排名， 如果超过了客户端本地排名，则更新最高历史排名信息
+	repeated struct_game_element output = 3;	//获胜的产出 比如推高历史排名的奖励
+};
+
+//竞技场被别人攻击时 防守成功或者失败的通知
+//竞技场被玩家击败或者成功防守的通知
+//进攻方和防守方 都有的通知！
+message gs_c_arena_challenge_ntf{
+	required user_arena_log ele = 1;
+};
+
+//重置挑战cd时间
+message c_gs_arena_challenge_reset_cd_req{
+};
+
+//重置挑战cd时间
+message gs_c_arena_challenge_reset_cd_res{
+	required uint32	error_code = 1;
+	optional uint32 last_challenge_time = 2;	//上一次的挑战时间
+	repeated struct_game_element consume = 3;	//消耗
+};
+
+//重置挑战次数
+message c_gs_arena_challenge_reset_num_req{
+};
+
+//重置挑战次数
+message gs_c_arena_challenge_reset_num_res{
+	required uint32	error_code = 1;
+	optional uint32 last_challenge_time = 2;		//上一次的挑战时间
+	optional uint32 last_day_challenge_num = 3;		//last_challenge_time当天已经挑战的次数
+	optional uint32 last_time_buy_arena_challenge = 4;	//上次购买挑战次数的时间
+	optional uint32 last_day_buy_arena_challenge_num = 5;	//上次当日购买挑战次数的次数，上限在sys_vip表
+	repeated struct_game_element consume = 6;	//消耗
+};
+
+//获取竞技场排行榜信息
+message c_gs_arena_ranks_req{
+	required uint32 page_num = 1;//页码从0开始 每页10个
+};
+
+message gs_c_arena_ranks_res{
+	required uint32	error_code = 1;
+	repeated user_arena_contestant ranks = 2;//榜单上的参赛者
+};
+
+//获取竞技场日志
+message c_gs_arena_log_req{
+};
+
+message gs_c_arena_log_res{
+	repeated user_arena_log log = 1;
+};
+
+//获取某人竞技场排名 只需要填一个 如果填了id 忽略名字
+message c_gs_arena_search_req{
+	optional uint32 user_id = 1;	//用户id 
+	optional string user_name = 2;	//用户名字
+};
+
+message gs_c_arena_search_res{
+	required uint32	error_code = 1;
+	optional user_arena_contestant contestant = 2;	//
+};
+
+//碎片合成材料或英雄
+message c_gs_fragment_compound_req{
+	required uint32 compound_id = 1;	//合成物品id						
+};
+
+message gs_c_fragment_compound_res{
+	required uint32	 error_code = 1;
+	repeated struct_game_element eles = 2;		//消耗的物品和合成得到的物品(超过叠加数量的通过邮件发送)
+};
+
+//邮件
+enum MAIL_STATUS
+{
+	MAIL_STATUS_READED = 1;		//已读
+	MAIL_STATUS_NOT_READED = 2;	//未读
+	MAIL_STATUS_DELED = 3;		//已删除
+};
+
+enum MAIL_TYPE
+{
+	MAIL_TYPE_RECHARGE_SUCCESS = 1;		//充值成功
+	MAIL_TYPE_VIP_LEVEL_UP = 2;		//VIP等级提升
+	MAIL_TYPE_ARENA_RANK_REWARD =  3;	//竞技场排名奖励
+	MAIL_TYPE_ARENA_TOP_RANK = 4;		//竞技场头名奖励	
+	MAIL_TYPE_OVERLAP_ITEMS = 5;		//物品到达堆叠上限
+	MAIL_TYPE_SYS_NOTICE = 6;		//系统公告
+	MAIL_TYPE_PRE_MONTH_ADD_SIGN = 7;	//上月补签物品
+	MAIL_TYPE_MAIL_GUIDE = 8;		//邮箱引导奖励
+};
+
+message user_mail
+{
+	required uint32		mail_id = 1;			// 邮件id
+	required uint32		send_time = 2;			// 发送时间
+	required MAIL_TYPE	type = 4;			// 邮件类型
+	optional string		content = 6;			// 具体内容
+	required MAIL_STATUS	status = 7;			// 邮件状态
+	repeated struct_game_element elements = 8;		//相关物品，金币等		    
+}
+
+message c_gs_mail_opt_req{
+	enum OPT
+	{
+		DEL = 1;			// 删除(特定和批量)
+		READ1 = 2;			//读取特定邮件
+		GET_ATTACH_AND_DEL1 = 3;	//领取特定邮件
+		GET_ATTACH_AND_DEL_ALL = 4;	//全部领取		
+
+	}
+	required OPT		mail_opt = 1;		//邮件操作
+	repeated uint32		mail_id_arr = 2;	//邮件id(全部领取不需要设置)
+}
+
+message gs_c_mail_opt_res{
+	message mail_update
+	{
+		required uint32 mail_id = 1;
+		required MAIL_STATUS mail_status = 2;
+	}
+	required uint32 error_code = 1;				//错误码
+	repeated mail_update  mail_update_arr = 2;		//邮件的更新信息
+	repeated struct_game_element output_arr = 3;		//获得物品信息	
+}
+
+//邮件通知
+message	gs_c_mail_ntf	
+{
+	enum OP_TYPE{
+		ADD = 1;
+		DEL = 2;
+	};
+	
+	required OP_TYPE type = 1;			//操作类型
+	optional user_mail ele = 2;			//add
+	optional uint32    mail_id = 3;			//del
+}
+
+
+message gs_c_mail_ntf_array{
+	repeated gs_c_mail_ntf mails = 1;
+	repeated struct_game_element eles = 2;		//删除过期邮件获得的物品
+}
+
+//非商店里面的购买
+message c_gs_buy_req{
+	required struct_game_element.EELEMENTTYPE buy_type = 1;		//购买类型
+	optional uint32 element_id = 2;
+}
+
+message gs_c_buy_res{
+	required uint32 error_code = 1;
+	optional struct_game_element.EELEMENTTYPE buy_type = 2;
+	repeated struct_game_element consume = 3;	//消耗
+	optional struct_game_element output = 4;	//获得
+	optional uint32 buy_used_times = 5;		//已使用次数(技能点购买没有次数限制，但有等级限制)
+}
+
+//任务(每日，成就，月卡)
+message user_mission{
+	enum MISSION_EVENT_TYPE
+	{
+		min = 0;
+		SKILL_LEVEL_UP = 1;			
+		RECHARGE = 2;				//充值
+		COMMON_FB_COMPLETE = 3;			//完成副本
+		COMMON_FB_ALL_THROUGH = 4;		//通关副本(SUB_TYPE表示副本ID)
+		COMMON_FB_ALL_THROUGH_THREE_STAR = 5;	//三星通关副本(SUB_TYPE表示副本ID) 
+		EQUIP_LEVEL_UP = 6;			//装备升级
+		RECHARGE_MISSION_MONTH_CARD1 = 7;	//月卡1充值
+		GIVE_FRIEND_HEALTH = 8;			//赠送好友体力
+		HERO_COLLECT = 9;			//英雄收集
+		HEALTH_MEAL = 10;			//体力套餐
+		GET_REWARD = 11;			//任务领取
+		RECHARGE_MISSION_MONTH_CARD2 = 12;	//月卡2充值
+		MISSION_MAIN = 13;			//主线任务
+		MISSION_FREE = 14;			//自由任务
+		ACTIVITY = 15;				//活动
+		JI_TAN = 16;				//祭坛抽奖
+		ARENA_CHALLENGE = 17;			//竞技场挑战
+		SHI_LIAN_TA = 18;			//试练塔
+		CRUSADE = 19;				//远征
+		LEVEL_UP = 20;				//等级提升
+		BUY_GOLD = 21;				
+		FB_FAIL = 22;				//副本挑战失败
+		COMPLETE_CHAPTER_ALL_FB_THREE_STAR = 23;//三星通关特定章节所有副本(主线和支线，要求据点是大点)（sub_type表示哪一章节）
+		ARENA_RANK_TOP = 24;			//竞技场头名奖励
+		COMPLETE_CHAPTER_FB = 25;		//完成特定章节副本多少次(sub_type表示哪一个章节)
+		max = 26;
+	};
+	
+	enum MISSION_EVENT_SUB_TYPE
+	{
+		MIN = 0;
+		NONE = 1;			//无子类型
+		HERO_QUALITY_GREEN = 2;		//英雄绿色品质
+		HERO_QUALITY_BLUE = 3;		//英雄蓝色品质
+		HERO_STAR_FOUR = 4;		//四星英雄
+		HERO_STAR_THREE = 5;		//三星英雄
+		PLAYER_LEVEL = 6;		//普通等级
+		VIP_LEVEL = 7;			//VIP等级
+		HUAXIA = 8;			//华夏副本
+		MAX = 9;
+	};
+
+	enum MISSION_STATUS
+	{
+		STATUS_CAN_ATTACH = 1;		//可领取
+		STATUS_IN = 2;			//进行中
+		STATUS_NOT_TO_TIME = 3;		//时间未到
+		STATUS_CAN_NOT_SEE = 4;		//不可见
+		STATUS_DELED = 5;		//已删除
+		STATUS_ALREADY_ATTACH = 6;	//已领取
+	};
+
+	message mission_event_need{
+		optional MISSION_EVENT_TYPE event_type = 1;
+		optional uint32 event_sub_type = 2;
+		optional uint32 cur_val = 3;			//当前完成数量
+		optional uint32 need_val = 4;			//需要达到的数量
+	}
+	required uint32 mission_id = 1;	//任务id
+	required MISSION_STATUS mission_status = 2;	//任务状态
+	repeated mission_event_need event_needs = 3;	//任务事件信息	
+}
+
+//任务通知
+message gs_c_mission_ntf_array
+{
+	message mission_opt
+	{
+		enum OPT
+		{
+			ADD = 1;
+			DEL = 2;
+			UPDATE = 3;
+		}
+		required OPT opt = 1;
+		required user_mission mis = 2;
+	}
+	repeated mission_opt mis_opts = 1;
+};
+
+//领取任务
+message c_gs_get_mission_reward_req
+{
+	required uint32 mission_id = 1;	//任务id
+};
+
+message gs_c_get_mission_reward_res
+{
+	required uint32 error_code = 1;
+	optional uint32 mission_id = 2;
+	optional user_mission.MISSION_STATUS status = 3;	//任务状态
+	repeated struct_game_element eles = 4;			//任务奖励
+};
+
+//签到
+
+//累计签到领取信息
+message sign_n_reward
+{
+	//累计签到领取类型
+	enum SIGN_N_REWARD_TYPE{
+		MIN = 1;
+		SIGN_N_REWARD_TYPE_FIRST = 2;
+		SIGN_N_REWARD_TYPE_SECOND = 3;
+		SIGN_N_REWARD_TYPE_THREE = 4;
+		SIGN_N_REWARD_TYPE_FOUR = 5;
+		MAX = 6;
+	}
+	
+	//状态
+	enum SIGN_N_REWARD_STATUS{
+		STATUS_CONDITION_NOT_SATISFY = 1;	//条件不足
+		STATUS_ALREADY_GET_ATTACH = 2;		//已经领取
+		STATUS_CAN_ATTACH = 3;			//可领取
+	}
+
+	required SIGN_N_REWARD_TYPE reward_type = 1;	//类型
+	required SIGN_N_REWARD_STATUS status = 2;	//状态
+}
+
+message user_sign
+{
+	required uint32 signed_1_times = 1;		//已签到次数
+	repeated sign_n_reward signed_n_reward = 2;	//累计签到领取状况
+	required uint32 left_add_sign_times = 3;	//剩余补签次数
+	required bool is_already_sign = 4;		//当日是否已签到 
+}
+
+//签到请求
+message c_gs_sign_req{
+	enum SIGN_TYPE{
+		SIGN_TYPE_1 = 1;	//每日签到
+		SIGN_TYPE_N = 2;	//累计签到请求
+	}
+	required SIGN_TYPE sign_type = 1;		//操作类型
+	optional sign_n_reward.SIGN_N_REWARD_TYPE reward_type = 2;	//累计签到领取类型
+}
+
+message gs_c_sign_res{
+	required e_gsc_errorcode error_code = 1;
+	repeated struct_game_element eles = 2;	//获得的奖励
+}
+
+//补签请求
+message c_gs_sign_add_req{
+}
+
+message gs_c_sign_add_res{
+	required e_gsc_errorcode error_code = 1;
+	optional uint32 left_add_sign_times = 2;	//剩余补签次数
+	repeated struct_game_element eles = 3;	//补签获得的奖励
+}
+
+//头像和头像框
+enum HEAD_CHANGE_TYPE{
+	HEAD = 1;	//头像
+	HEAD_FRAME = 2;	//头像边框
+}
+message c_gs_head_or_frame_change_req{
+	required HEAD_CHANGE_TYPE change_type = 1;	//更改类型
+	required uint32 target_id = 2;		//head:表示hero_id frame:表示头像框id
+}
+
+message gs_c_head_or_frame_change_res{
+	required e_gsc_errorcode error_code = 1;
+	optional HEAD_CHANGE_TYPE change_type = 2;	//更改类型
+	optional uint32 target_id = 3;			//head:表示hero_id frame:表示头像框id
+}
+
+//编辑玩家信息
+message c_gs_edit_player_info_req{
+	optional string name = 1;		//名字
+	optional uint32 head_id = 2;		//头像id
+	optional uint32 head_frame_id = 3;	//头像框id
+	optional string signature = 4;		//个性签名
+}
+
+message gs_c_edit_player_info_res{
+	required e_gsc_errorcode error_code = 1;
+	optional string name = 2;
+	optional uint32 head_id = 3;		//头像id
+	optional uint32 head_frame_id = 4;	//头像框id
+	optional string signature = 5;
+}
+
+message c_gs_finish_novice_guide_req{
+	required uint32 guide_id = 1;	//引导id
+}
+
+message gs_c_finish_novice_guide_res{
+	required e_gsc_errorcode error_code = 1;
+	optional  uint32 guide_id = 2;
+}
+
+//跑马灯
+message gs_c_marquee_ntf{
+	enum MARQUEE_TYPE{
+		MARQUEE_MIN = 0;
+		MARQUEE_INVOKE = 1;		//祭坛抽取
+		MARQUEE_HERO_EVOLUTION = 2;	//英雄突破
+		MARQUEE_INVOKE_HERO = 3;	//召唤英雄
+		MARQUEE_HERO_STAR_UP = 4;	//英雄升星
+		MARQUEE_ARENA_CHALLENGE = 5;	//竞技场挑战
+		MARQUEE_WORD = 6;		//自定义(自定义一句话，客户端直接显示)
+		MARQUEE_MAX = 7;
+	};
+	required MARQUEE_TYPE marquee_type = 1;	//跑马灯类型
+	required uint32 marquee_times = 2;	//滚动次数
+	required string content = 3;		//内容(以逗号隔开)
+}
+
+message gs_c_element_ntf{
+	repeated struct_game_element eles = 1;
+}
+
+
+
+message friend_base_info{
+	required uint32 user_id = 1;
+	required uint32 head_id = 2;		//头像
+	required uint32 head_frame_id = 3;	//头像框
+	required string name = 4;		//好友昵称
+	required uint32 level = 5;		//好友等级
+	required uint32 vip = 6;
+	required uint32 arena_rank = 7;		//竞技场排名
+	required uint32 last_login_time = 8;	//最后登陆时间(0表示在线)
+	optional string signature = 9;		//个性签名
+}
+//好友
+message user_friend{
+	message friend_info{
+		required friend_base_info base_info = 1;
+		required bool is_friend_give = 2;	 //是否好友赠送给我物品
+		required bool is_me_give = 3;		 //是否我赠送给好友物品
+	}
+
+	repeated friend_info		   friends = 1;		//好友列表
+	repeated friend_base_info   applies = 2;	//好友申请列表
+	repeated friend_base_info  confirms = 3;	//待确认确认列表
+	repeated friend_base_info  recommends = 4;	//推荐好友(5个) 
+}
+
+
+message c_gs_user_friend_op_req{
+	enum OP_TYPE{
+		MIN = 0;
+		GET_ELEMENT1 = 1;		//领取物品
+		GET_ELEMENTN = 2;		//全部领取
+		GIVE_ELEMENT1 = 3;		//赠送物品
+		GIVE_ELEMENTN = 4;		//全部赠送体
+
+		GIVE_UP_APPLY1 = 5;		//撤销申请
+		GIVE_UP_APPLYN = 6;		//全部撤销申请
+
+		AFFIRM_AGREE1 = 7;		//同意申请
+		AFFIRM_AGREEN = 8;		//全部同意
+
+		AFFIRM_REFUSE1 = 9;		//拒绝申请
+		AFFIRM_REFUSEN = 10;		//全部拒绝
+
+		ADD_FRIEND = 11;		//添加好友
+		DEL_FRIEND = 12;		//删除好友
+		MAX = 13;
+	}
+
+	required OP_TYPE op_type = 1;
+	optional uint32 user_id = 2;
+}
+
+message gs_c_user_friend_op_res{
+	required int32 error_code = 1;
+	required c_gs_user_friend_op_req.OP_TYPE op_type = 2;
+	optional uint32 user_id = 3;
+	repeated struct_game_element eles = 4;
+	optional friend_base_info base_info = 5;	//添加好友返回信息
+}
+
+message c_gs_search_user_req{
+	optional string name = 1;//通过名字搜索
+	optional uint32 user_id = 2;//通过玩家id搜索
+}
+
+message gs_c_search_user_res{
+	required int32 error_code = 1;
+	optional friend_base_info base_info = 2;
+}
+
+message gs_c_friend_ntf{
+	enum OP_TYPE{
+		FRIEND_GIVE_ELEMENT = 1;	//朋友赠送物品
+		FRIEND_GIVE_UP_APPLY = 2;	//朋友取消申请 需要从待确认列表中删除该玩家	
+		FRIEND_AFFIRM_AGREE = 3;	//朋友确认申请 需要从申请列表移动到好友列表中
+		FRIEND_DEL_FRIEND = 4;		//朋友删除好友 需要从好友列表中删除好友
+		FRIEND_AFFIRM_REFUSE = 5;	//朋友拒绝申请 需要从申请列表中删除
+		FRIEND_ADD_FRIEND = 6;		//朋友添加好友 需要加入到待确认列表中
+	}
+	required OP_TYPE op_type = 1;
+	optional uint32 friend_id = 2;			//朋友id(1,2,3,4,5用)
+	optional friend_base_info base_info = 3;	//基本信息(6用)
+}
+
+//聊天
+message c_gs_chat_req{
+	enum CHAT_TYPE{
+		WORLD = 1;	//世界
+		GUILD = 2;	//公会
+		WHISPER = 3;	//私聊
+	}
+	required CHAT_TYPE chat_type = 1;
+	optional uint32 to_id = 2;
+	optional string to_name = 3;
+	required string word = 4;	//聊天文本
+}
+
+message gs_c_chat_res{
+	required uint32 error_code = 1;
+}
+
+message gs_c_chat_ntf{
+	required  c_gs_chat_req.CHAT_TYPE chat_type = 1;
+	required uint32 user_id = 2;
+	required uint32 vip = 3;
+	required string name = 4;
+	required uint32 head_id = 5;
+	required uint32 head_frame_id = 6;
+	required string word = 7;
+}
+
+message c_gs_fight_power_req{
+	required uint32 fight_power = 1;
+}
+
+message gs_c_fight_power_res{
+	required uint32 error_code = 1;
+}
+
+message c_gs_rank_req{
+	enum RANK_TYPE{
+		ARENA = 1;
+		FIGHT_POWER = 2;
+		LEVEL = 3;
+		GUILD = 4;
+	}
+	required RANK_TYPE rank_type = 1;
+}
+
+message gs_c_rank_res{
+	message user_hero_brief_info{
+		required uint32 hero_id = 1;
+		required uint32 level = 2;
+		required uint32 quality = 3;
+		required uint32 star = 4;
+	}
+
+	message rank_info{
+		required uint32 head_id = 1;
+		required uint32 head_frame_id = 2;
+		required uint32 level = 3;
+		required string name = 4;
+		required uint32 arena_rank = 5;	//竞技场排名
+		required uint32 fight_rank = 6;	//战力排名
+		required uint32 fight_power = 7;//战力
+		required uint32 level_rank = 8;	//等级排名
+		required uint32 vip = 9;	//vip
+		repeated user_hero_brief_info heros = 10;	//防守阵容
+	}
+	required uint32 error_code = 1;
+	optional c_gs_rank_req.RANK_TYPE rank_type = 2;
+	repeated rank_info ranks = 3;
+	optional uint32 me_cur_rank = 4;	//当前我的排名
+	optional uint32 me_cur_value = 5;
+
+}
+
+//远征
+
+//开始远征
+message c_gs_crusade_start_req{
+	required uint32 wave = 1;		//哪一波
+	repeated uint32 enemy_heros = 2;	//敌人出战的英雄（为了记录客户端的出战阵容）
+	repeated uint32 me_heros = 3;		//我方出战阵容
+}
+
+message gs_c_crusade_start_res{
+	required uint32 error_code = 1;
+	optional uint32 wave = 2;
+}
+
+//结束远征
+message c_gs_crusade_end_req{
+	required bool is_win = 1;
+	repeated user_crusade.crusade_hero enemy_heros = 2;//敌人英雄信息(如果玩家胜利了就不用发了)
+	repeated user_crusade.crusade_hero me_heros = 3;//自己的英雄信息
+}
+
+message gs_c_crusade_end_res{
+	required uint32 error_code = 1;
+	repeated struct_game_element outputs = 2;	//产出
+}
+
+//英雄重生
+message c_gs_crusade_hero_life_req{
+	required uint32 hero_id = 1;
+}
+
+message gs_c_crusade_hero_life_res{
+	required uint32 error_code = 1;
+	optional uint32 hero_id = 2;
+	repeated struct_game_element consumes = 3;	//消耗
+}
+
+//重置远征
+message c_gs_crusade_reset_req{
+}
+
+message gs_c_crusade_reset_res{
+	required uint32 error_code = 1;
+}
+
+//提升奖励
+message c_gs_crusade_promote_award_req{
+}
+
+message gs_c_crusade_promote_award_res{
+	required uint32 error_code = 1;
+	repeated struct_game_element consumes = 2;	//消耗
+}
+
+//刷新buff
+message c_gs_crusade_buff_refresh_req{
+}
+
+message gs_c_crusade_buff_refresh_res{
+	required uint32 error_code = 1;
+	repeated struct_game_element consumes = 2;//消耗
+}
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>> 公会相关协议
+
+enum e_guild_position{
+	//职位 1普通成员 2副会长 3.会长   0不会在这里出现
+	EOutsider = 0;		// 0非会员（主动退出或被逐出公会）
+	ECommon = 1;		//1普通成员
+	EVicePresident = 2;	//2副会长
+	EPresident = 3;		//3.会长
+	EInsider = 4;		//包含1,2,3
+};
+
+//公会当前状态 0已经解散 1关闭招募 2.加入需申请 3.自由加入
+enum e_apply_switch_status{
+	Disband = 0;/已经解散
+	Close = 1;
+	Need = 2;
+	Not_Need = 3;
+	MAX = 4;
+};
+
+message struct_guild_list_item{
+	required string name = 1;		//公会名字
+	//required uint32 creator_user_id = 2;	//创建者
+	//required uint32 create_time = 3;	//创建时间
+	required uint32 president_user_id = 2;	//当前会长
+	required e_apply_switch_status status = 3;		//公会当前状态 0关闭招募 1.加入需申请 2.自由加入
+	required uint32 flag = 4;		//公会标志旗帜
+	//required uint32 level = 7;		//公会等级 由公会经验值也就是贡献度决定 客户端根据gxp就算
+	//required uint32 contribution_point = 8;	//公会当前经验值 也叫公会总活跃度 贡献度 gxp
+	//required uint32 coin = 9;		//公会货币
+	//required string announcement = 10;	//公告
+
+	
+	required uint32 guild_id = 5;		//公会id
+	required string president_name = 6;	//当前会长名字
+	required uint32 member_num = 7;	//会员数 退会的不算
+};
+
+//玩家如果已经离会 也会有这个信息 因为coin会保存 其他信息
+message struct_user_guild_info{
+	required e_guild_position position = 1;		//我的职位 如果退会了或者没有进会就是position == EOutsider
+	required uint32 leave_time = 2;			//如果position == EOutsider 表示玩家已离会 则这里记录上一次的离会时间
+	required uint32 my_coin = 3;			//我的公会代币
+	
+	//当玩家退会 或者没有 公会时 以下信息都不会设置！ 不必显示给玩家看
+	//当玩家是一个有效的会员的时候 以下的信息才会设置
+
+	optional uint32 my_contribution_point = 4;	//我的贡献度
+
+	optional uint32 guild_id = 5;		//公会id 离会了也会有的！ 因为如果不是解散公会 member还必须在
+	optional string name = 6;		//公会名字
+	//required uint32 creator_user_id = 2;	//创建者
+	//required uint32 create_time = 3;	//创建时间
+	optional uint32 president_user_id = 7;	//当前会长
+	optional e_apply_switch_status status = 8;	//公会当前状态 0关闭招募 1.加入需申请 2.自由加入
+	optional uint32 flag = 9;		//公会标志旗帜
+	//required uint32 level = 8;		//公会等级 由公会经验值也就是贡献度决定
+	optional uint32 contribution_point = 11;//公会当前经验值 也叫公会总活跃度 贡献度
+	optional uint32 coin = 12;		//公会货币
+	optional string announcement = 13;	//公告
+
+	message struct_guild_member{
+		//required uint32 guild_id = 1;		
+		required uint32 user_id = 1;		
+		required uint32 position = 2;		//职位 1普通成员 2副会长
+		//required uint32 join_time = 4;
+		//required uint32 is_leaving = 5;		//1已离开 要等24小时才能再进入新公会
+		//required uint32 leave_time = 6;
+		required uint32 contribution_point = 3;	//公会成员活跃度 贡献度
+		//required uint32 coin = 8;		//公会成员货币
+
+		//
+		required string name = 4;
+		required uint32 head_id = 5;
+		required uint32 head_frame_id = 6;
+		required uint32 last_online_time = 7;	//0表示在线 其他表示上一次在线时间	
+	};
+
+	repeated struct_guild_member members = 14;	//公会所有成员
+	optional uint32 max_boss_position = 15;		//公会目前已经开启的最大boss位置
+
+	//其他的boss信息 通过boss列表请求来拉取
+}
+
+
+message struct_guild_boss{
+	required uint32 position = 1;
+	//required uint32 status = 2;		//不需要此字段 没有激活的不会发给客户端  是否已经被激活 0没有激活 1已经有
+	required uint32 lose_hp = 3;		//已经丢失的生命值
+	required uint32 killed_num = 4;		//被击杀的次数 为了判断是否下一个boss是否可以激活开启
+
+	//如果boss还没有死 则以下信息不设置！！
+
+	optional uint32 killer_user_id = 5;	//被谁补刀的
+	optional string killer_name = 6;	
+	optional uint32 killer_head_id = 7;
+	optional uint32 killer_head_frame_id = 8;
+}
+
+message struct_guild_boss_attacker_dead_hero{
+	//required uint32 user_id = 1;
+	//required uint32 boss_position = 2;
+	required uint32 hero_id = 3;		//英雄id
+	required uint32 dead_time = 4;		//死亡时间 每天会复活
+};
+
+//公会创建
+message c_gs_guild_new_req{
+	required string name = 1;
+	required uint32 flag = 2;//公会标志
+};
+
+message gs_c_guild_new_res{
+	required int32 error_code = 1;
+	repeated struct_game_element consume = 2;
+};
+
+//这里可以转让会长 e_msg_c_gs_guild_member_op_req这里也可以转让会长  
+message c_gs_guild_edit_req{
+
+
+	required string name = 1;		//公会名字
+	//required uint32 creator_user_id = 2;	//创建者
+	//required uint32 create_time = 3;	//创建时间
+	required uint32 president_user_id = 4;	//当前会长
+	required e_apply_switch_status status = 5;		//公会当前状态 0关闭招募 1.加入需申请 2.自由加入
+	required uint32 flag = 6;		//公会标志旗帜
+	//required uint32 level = 7;		//公会等级 由公会经验值也就是贡献度决定
+	//required uint32 contribution_point = 8;	//公会当前经验值 也叫公会总活跃度 贡献度
+	//required uint32 coin = 9;		//公会货币
+	required string announcement = 10;	//公告
+};
+
+message gs_c_guild_edit_res{
+	required int32 error_code = 1;
+};
+
+message c_gs_guild_delete_req{
+};
+
+message gs_c_guild_delete_res{
+	required int32 error_code = 1;
+};
+
+//gs推送给客户端 玩家所在的公会已经被解散的通知
+message gs_c_guild_quit_ntf{
+};
+
+//申请被接受时 的通知
+message gs_c_guild_join_ntf{
+};
+
+
+message c_gs_guild_apply_list_req{
+	enum e_show_for{
+		EOutsider = 1;	//非会员拉取自己的申请公会列表
+		EManager = 2;	//公会管理者拉取 申请列表
+	}
+	
+	required e_show_for who = 1;
+};
+
+message gs_c_guild_apply_list_res{
+	message struct_apply_for_outsider{
+		//required uint32 guild_id = 1;		//公会id
+		required uint32 user_id = 2;		//玩家id
+		required uint32 time = 3;		//申请时间
+		//required uint32 status = 4;		//申请状态 0已提交未处理 1同意 2拒绝    实际上没有必要了 因为一经操作 就删除了
+		
+		required string name = 5;
+		required uint32 level = 6;
+		required uint32 fight_power = 7;
+	};
+
+	required int32 error_code = 1;
+	repeated struct_apply_for_outsider applys_for_manager = 2;	//公会管理者拉取 申请列表
+	repeated struct_guild_list_item applys_for_outsider = 3; //非会员拉取自己申请的公会列表
+};
+
+message c_gs_guild_apply_op_req{
+	enum e_op_type{
+		EUser_Send = 1;		//用户对公会发出申请
+		EUser_Quick_Send = 2;	//用户快速申请 发给多个可申请公会
+		EUser_Cancel = 3;	//用户取消自己的申请
+		EGuild_Accept = 4;	//公会接受玩家申请
+		EGuild_Refuse = 5;	//公会拒绝玩家申请
+	};
+
+	required e_op_type op_type = 1;
+	optional uint32 guild_id = 2;	//EUser_Send或者EUser_Cancel时才需要设置
+	optional uint32 user_id = 3;	//EGuild_Accept或者EGuild_Accept的时候才需要设置
+};
+
+message gs_c_guild_apply_op_res{
+	required int32 error_code = 1;
+};
+
+
+//三种功能 这些操作服务器会作相应的权限判断
+//1.会长用来设置其他成员的职位 或者逐出公会 user_id为待处理的用户id
+//2.会长转让公会  user_id为新会长的用户id
+//3.会员离开公会  user_id可以不用填
+message c_gs_guild_member_op_req{
+	optional uint32 user_id = 1;	//目标成员 如果是自己 则只能是会长转让会长  或者  离开公会
+	required e_guild_position new_position = 2;//职位 0非会员（主动退出或被逐出公会） 1普通成员 2副会长 3.会长
+};
+
+//可以转让会长 也可以在e_msg_c_gs_guild_edit_req中转让
+message gs_c_guild_member_op_res{
+	required int32 error_code = 1;
+};
+
+//复活或者激活boss
+message c_gs_guild_boss_refresh_req{
+	required uint32 position = 1;//boss位置
+};
+
+//boss刷新 应该通知给所有的公会人员 在公会频道！
+//boss没死 不可以刷新
+message gs_c_guild_boss_refresh_res{
+	required int32 error_code = 1;
+	repeated struct_game_element consume = 2;
+
+	//boss信息更新
+	optional struct_guild_boss boss = 3;
+
+	//自己的公会信息更新 对这个boss的伤害信息 清空
+	//是否需要通知给客户端？ 可以自己做的
+};
+
+//搜索公会 用id或者名字
+message c_gs_guild_search_req{
+	optional string name = 1;
+	optional uint32 guild_id = 2;
+};
+
+message gs_c_guild_search_res{
+	required int32 error_code = 1;
+	repeated struct_guild_list_item guilds = 2;
+};
+
+//列出公会
+message c_gs_guild_list_req{
+	enum e_list_type{
+		ERecommend = 1;			//推荐公会列表
+		EApplied = 2;			//正在申请中的公会列表 被拒绝的申请不会出现在这个列表里
+		EActive = 3;			//活跃公会列表
+	};
+
+	required e_list_type type = 1;
+};
+
+message gs_c_guild_list_res{
+	required int32 error_code = 1;
+	repeated struct_guild_list_item guilds = 2;
+};
+
+//获取我的公会信息
+message c_gs_guild_info_req{
+};
+
+message gs_c_guild_info_res{
+	required int32 error_code = 1;
+	optional struct_user_guild_info my_guild = 2;
+};
+
+//列出公会的boss
+message c_gs_guild_boss_list_req{
+};
+
+message gs_c_guild_boss_list_res{
+	required int32 error_code = 1;
+	repeated struct_guild_boss bosses = 2;//没出现的都是需要激活的
+};
+
+//boss信息 包含已经阵亡的英雄列表 和 已经重置阵亡英雄的次数
+message c_gs_guild_boss_info_req{
+	required uint32 position = 1;
+}
+
+//获取某个boss信息
+message gs_c_guild_boss_info_res{
+	required int32 error_code = 1;
+	optional struct_guild_boss boss = 2;	//boss基本信息
+	optional uint32 last_reset_time = 3;	//上一次的重置时间
+	optional uint32 last_day_reset_num = 4;		//死亡英雄已重置次数  每天刷新
+	repeated struct_guild_boss_attacker_dead_hero dead_heros = 5;	//针对这个boss的死亡的英雄们
+}
+
+//boss攻击 客户端战斗完成的时候请求
+message c_gs_guild_boss_attack_req{
+	required uint32 boss_position = 1;	//boss位置
+	required uint32 lose_hp = 2;		//boss掉的血
+	//required uint32 is_win = 3;		//不需要了 服务器根据血量判断是否被击杀 是否获胜 如果获胜者boss被击杀
+	repeated uint32 dead_heros = 3;		//如果失败 才需要发过来的在这个boss上阵亡的英雄
+};
+
+message gs_c_guild_boss_attack_res{
+	required int32 error_code = 1;		
+	optional uint32 is_killer = 2;			//是否补刀成功
+	//optional struct_guild_boss boss = 3;		//新的boss信息 可以不发送
+	repeated struct_game_element consume = 4;	//消耗
+	repeated struct_game_element output = 5;	//产出
+};
+
+//复活某一boss身上所有阵亡的英雄
+message c_gs_guild_boss_dead_hero_reset_req{
+	required uint32 boss_position = 1;	//boss位置
+};
+
+message gs_c_guild_boss_dead_hero_reset_res{
+	required int32 error_code = 1;	
+	optional uint32 boss_position = 2;		//boss位置
+	optional uint32 reset_num = 3;			//已重置次数  每天刷新
+	optional uint32 last_reset_time = 4;		//上一次的重置时间
+	repeated struct_game_element consume = 5;	//消耗
+};
+
+message c_gs_guild_boss_attacker_rank_req{
+	required uint32 boss_position = 1;	//boss位置
+};
+
+message gs_c_guild_boss_attacker_rank_res{
+	required int32 error_code = 1;
+
+	message struct_boss_attacker{
+		required uint32 user_id = 1;
+		required string name = 2;
+		required uint32 lose_hp = 3;
+	};
+
+	//并没有排序 需要客户端根据lose_hp排序
+	repeated struct_boss_attacker attckers = 2;	//此boss的攻击者们
+};
+//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< 公会相关协议
+
+
+//服务器时间 
+message c_gs_server_time_req{
+}
+
+message gs_c_server_time_res{
+	required int32 error_code = 1;
+	optional uint32 server_time = 2;	//服务器时间
+}
+//-------------------------------------------------------------
