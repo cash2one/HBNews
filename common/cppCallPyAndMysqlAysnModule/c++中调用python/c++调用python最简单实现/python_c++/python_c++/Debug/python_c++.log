@@ -1,0 +1,20 @@
+﻿生成启动时间为 2014/12/25 10:01:18。
+     1>项目“D:\project\python_c++\python_c++\python_c++.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在对“Debug\python_c++.unsuccessfulbuild”执行 Touch 任务。
+       ClCompile:
+         所有输出均为最新。
+       ManifestResourceCompile:
+         所有输出均为最新。
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\project\python_c++\Debug\python_c++.exe" /INCREMENTAL /NOLOGO /LIBPATH:C:\Python27\libs python27.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\python_c++.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"D:\project\python_c++\Debug\python_c++.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\project\python_c++\Debug\python_c++.lib" /MACHINE:X86 Debug\python_c++.exe.embed.manifest.res
+         Debug\Main.obj
+     1>Main.obj : error LNK2019: 无法解析的外部符号 __imp___Py_Dealloc，该符号在函数 _main 中被引用
+     1>Main.obj : error LNK2019: 无法解析的外部符号 __imp___Py_NegativeRefcount，该符号在函数 _main 中被引用
+     1>Main.obj : error LNK2001: 无法解析的外部符号 __imp___Py_RefTotal
+     1>D:\project\python_c++\Debug\python_c++.exe : fatal error LNK1120: 3 个无法解析的外部命令
+     1>已完成生成项目“D:\project\python_c++\python_c++\python_c++.vcxproj”(build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:00.43

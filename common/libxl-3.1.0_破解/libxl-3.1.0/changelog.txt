@@ -1,0 +1,260 @@
+Version 3.1.0 (2010-11-16)
+--------------------------------------------------
+Improvements:
+
+       - named ranges support
+       - RGB colors support for xls format
+       - added offset_x and offset_y parameters in Sheet::setPicture() method
+       - print area support
+       - print titles support (repeated rows and columns on each page)
+       - added two sheet's properties: summaryBelow and summaryRight for grouped cells
+       - reduced memory consumtion for reading/writing xlsx files
+
+New methods:
+
+       - Sheet::setNamedRange()
+       - Sheet::delNamedRange()
+       - Sheet::setPrintRepeatRows()
+       - Sheet::setPrintRepeatCols()
+       - Sheet::setPrintArea()
+       - Sheet::clearPrintRepeats()
+       - Sheet::clearPrintArea()
+       - Sheet::groupSummaryBelow()
+       - Sheet::setGroupSummaryBelow()
+       - Sheet::groupSummaryRight()
+       - Sheet::setGroupSummaryRight()
+
+Bug fixes:
+
+       - fixed bugs in Sheet::setCol() and Sheet::groupCols() methods
+       - added stretch property for pictures in xlsx files
+       - fixed bug with adding pictures in existing xls-file
+       - fixed bug with shared formulas
+
+Version 3.0.2 (2010-09-15)
+--------------------------------------------------
+
+       - improved writing performance for xlsx format
+       - changed all "unsigned short" types to "int", 
+         therefore now it's possible to write more than 65536 rows in xlsx format       
+       - possibility of keeping i386 and x64 libraries in the same folder,
+         so changed names to libxl32.dll and libxl64.dll (removed in version 3.1.0)
+
+Version 3.0.1 (2010-08-25)
+--------------------------------------------------
+
+       - fixed bug with loading some xlsx files (unknown attribute error)
+
+Version 3.0.0 (2010-08-24)
+--------------------------------------------------
+
+       - Excel 2007/2010 support (xlsx)
+
+       Changes in binary interface:
+
+       - optimized reading speed and memory consumption for big files
+       - fixed bug with sheet's name in Japanese/Korean/Chinese languages in multi-byte interface
+       - changed behaviour of Sheet::split() method
+       - added method Sheet::setCellFormat()
+       - removed message "too many dir sectors - perhaps it's infinite loop" for large files
+       - fixed bug in OfficeArtFDGGBlock
+       - added access to list of formats and fonts in document
+       - added msec parameter in datePack/dateUnpack
+
+       New methods:
+
+       - xlCreateXMLBook()
+       - Book::format() 
+       - Book::formatSize()
+       - Book::font()
+       - Book::fontSize()
+       - Book::colorPack()
+       - Book::colorUnpack()
+       - Book::rgbMode()
+       - Book::setRgbMode()
+       - Sheet::setCellFormat()
+
+Version 2.4.3 (2010-06-07)
+--------------------------------------------------
+
+       - added Sheet::setProtect() and Sheet::protect() methods
+       - fixed bug with loading xls files with form controls
+       - fixed bug in Sheet::writeFormula()
+       - fixed some incorrect relative references
+       - fixed bug with reading string values in shared formula
+       - fixed printZoom default value
+       - fixed .NET interface: Book::errorMessage(), Book::sheetCount(), Book::activeSheet()
+       - fixed bugs with loading some xls files
+       - fixed bug with reading coordinates in shared formula
+       - fixed bug with incorrect reading formula with external reference
+
+Version 2.4.2 (2010-05-12)
+--------------------------------------------------
+Improvements:
+
+       - support BMP and DIB picture formats
+       - loading pictures from memory buffer
+
+New methods:
+
+       - Book::addPicture2()
+
+Bug fixes:
+
+       - fixed bug with reading shared formulas
+       - fixed issue with loading workbook with dropdown lists ("error in record FtLbsData")
+       - changed return type "unsigned short" to "int" in firstRow/lastRow/firstCol/lastCol methods
+       - restoring normal book state after loading error       
+       - fixed datePack/dateUnpack for time values
+       - fixed bugs with loading some xls files
+
+Version 2.4.1 (2010-03-01)
+--------------------------------------------------
+
+       - removed memory leaks
+       - small fixes
+
+Version 2.4.0 (2010-02-25)
+--------------------------------------------------
+Improvements:
+
+       - formula support
+       - ability to change a default font
+
+New methods:
+
+       - Sheet::readFormula()
+       - Sheet::writeFormula()
+       - Sheet::isFormula()
+       - Book::defaultFont()
+       - Book::setDefaultFont()
+       
+Version 2.3.2 (2010-02-01)
+--------------------------------------------------
+
+       - fixed bug with saving some xls files
+       - fixed bug in margin methods                      
+
+Version 2.3.1 (2010-01-20)
+--------------------------------------------------
+
+       - fixed bug with Book::loadRaw() on Linux and Mac
+       - changed behavior Book::saveRaw(): now LibXL writes raw data to internal memory buffer
+
+Version 2.3.0 (2010-01-14)
+--------------------------------------------------
+Improvements:
+
+       - loading/saving a book from/to memory buffer
+       - copying sheets and cells
+       - access to format for any cell (without detecting type)
+       - now library doesn't touch existing formats when user edits an existing document
+       - renaming sheets
+
+New methods:
+      
+       - Book::loadRaw()
+       - Book::saveRaw()
+       - Book::copySheet()      
+       - Sheet::copyCell()
+       - Sheet::cellFormat()
+       - Sheet::setName()
+       
+Bug fixes:
+
+       - fixed bug with opening xls in Numbers (iWork on MacOSX)
+       - fixed Sheet::colWidth() and Sheet:setCol(), precise column's widths now
+       - fixed issues with loading some xls files
+       - fixed bug when user loads several xls files in memory at a time
+       - fixed Sheet::setRow()       
+       - values from firstRow/lastRow/firstCol/lastCol methods are updating in run-time now
+
+Version 2.2.2 (2009-10-13)
+--------------------------------------------------
+Improvements:
+
+       - inserting/removing rows/columns
+       - removing merges
+
+New methods:
+
+       - Sheet::insertCol()
+       - Sheet::insertRow()
+       - Sheet::removeCol()
+       - Sheet::removeRow()
+       - Sheet::delMerge()
+
+Version 2.2.1
+--------------------------------------------------
+      
+       - new method Sheet::isDate() for fast detecting any date/time values
+       - fixed Sheet::split()
+       - removed GLIBCXX_3.4.9 dependency in Linux package
+
+Version 2.2.0
+--------------------------------------------------
+Improvements:
+       
+       - support comments
+       - sheet splitting  
+       - grouping and outline                      
+       - clear areas in sheets
+       - extracting dimensions of sheets
+
+New methods:
+
+       - Sheet::readComment()
+       - Sheet::writeComment()
+       - Sheet::split()
+       - Sheet::split2()
+       - Sheet::groupRows()
+       - Sheet::groupCols()
+       - Sheet::clear()
+       - Sheet::firstRow()
+       - Sheet::lastRow()
+       - Sheet::firstCol()
+       - Sheet::lastCol()
+
+Bug fixes:
+       
+       - fixed warning when file is opened in Excel 2007 
+       - opens xls with external links without errors
+       - fixed some minor bugs
+
+Version 2.1.0
+--------------------------------------------------
+Improvements:
+        
+       - support pictures (png, jpg, wmf)     
+       - page breaks support
+       - read/write bool values
+       - read/write blank cells
+       - detecting cell's type
+       - read cells with formula
+       - get/set active sheet
+       - get row height and column width
+
+New methods:
+
+       - Book::addPicture()
+       - Book::activeSheet()
+       - Book::setActiveSheet()       
+       - Sheet::cellType()
+       - Sheet::setPicture()
+       - Sheet::readBool()
+       - Sheet::writeBool()
+       - Sheet::readError()
+       - Sheet::colWidth()
+       - Sheet::rowHeight()
+       - Sheet::setHorPageBreak()       
+       - Sheet::setVerPageBreak()
+
+Bug fixes:      
+     
+       - opens xls with macros without errors       
+       - opens xls with charts without errors
+       - fixed some minor bugs
+
+Version 2.0.0
+--------------------------------------------------
+New release with a completely new redesign

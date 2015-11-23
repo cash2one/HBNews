@@ -1,0 +1,5 @@
+注意：工具运行高版本excel出错，需要使用低版本.xls文件
+
+1.在bin目录下config.xml中GenerateExcel节点中配置原生的客户端配置文件(!需要低版本)
+2.运行GenerateExcel.exe在bin目录下生成服务器需要的客户端配置文件并在数据库中建立配置表
+3.在config.xml LoadExcel节点中配置第1步生成的配置文件，配置好了运行LoadExcel.exe会导入配置文件中的记录到数据库中
